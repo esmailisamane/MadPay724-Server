@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MadPay724.Data.DatabaseContext;
-using MadPay724.Data.Infrastructure;
+using MadPay724.Repo.Infrastructure;
 using MadPay724.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 

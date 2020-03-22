@@ -7,9 +7,8 @@
     <StartupObject />
   </PropertyGroup>
 
-
   <ItemGroup>
-    <ProjectReference Include="..\MadPay724.Data\MadPay724.Data.csproj"/>
+    <ProjectReference Include="..\MadPay724.Data\MadPay724.Data.csproj" />
   </ItemGroup>
 
 </Project>
