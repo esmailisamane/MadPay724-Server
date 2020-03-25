@@ -68,18 +68,20 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
+        public async Task<IActionResult> login(UserForLoginDto userForLoginDto)
         {
+            
             var userFromRepo = await _authService.Login(userForLoginDto.UserName, userForLoginDto.Password);
             if (userFromRepo == null)
-                return Unauthorized(new returnMessage()
-                {
-                    status = false,
-                    title = "خطا",
-                    message = "کاربری با این یوزر و پسورد وجود ندارد",
+                return Unauthorized("کاربری با این یوزر و پسورد وجود ندارد");
+                //return Unauthorized(new returnMessage()
+                //{
+                //    status = false,
+                //    title = "خطا",
+                //    message = "کاربری با این یوزر و پسورد وجود ندارد",
 
 
-                });
+                //});
             var clamis = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
@@ -103,6 +105,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             {
                 token = tokenHandler.WriteToken(token)
             });
+            
         }
 
 
