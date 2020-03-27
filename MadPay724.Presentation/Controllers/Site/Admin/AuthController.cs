@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin;
+using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Data.Models;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
@@ -19,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MadPay724.Presentation.Controllers.Site.Admin
 {   [Authorize]
+    [ApiExplorerSettings(GroupName ="Site")]
     [Route("site/admin/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
