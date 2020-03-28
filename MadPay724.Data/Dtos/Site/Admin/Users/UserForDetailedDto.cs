@@ -13,7 +13,7 @@ namespace MadPay724.Data.Dtos.Site.Admin.Users
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public bool Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public int Age { get; set; }
         public DateTime LastActive { get; set; }
         public string City { get; set; }
         public string PhotoUrl { get; set; }

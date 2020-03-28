@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MadPay724.Repo.Infrastructure
@@ -20,6 +19,7 @@ namespace MadPay724.Repo.Infrastructure
             _dbSet = _db.Set<TEntity>();
         }
         #endregion
+
 
         #region normal 
         public void Insert(TEntity entity)
@@ -59,13 +59,38 @@ namespace MadPay724.Repo.Infrastructure
         {
             return _dbSet.AsEnumerable();
         }
+        public IEnumerable<TEntity> GetMany(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string includeEntity = "")
+        {
+            //return _dbSet.Where(where).FirstOrDefault();
+
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeentity in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeentity);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
+
+        }
         public TEntity Get(Expression<Func<TEntity, bool>> where)
         {
             return _dbSet.Where(where).FirstOrDefault();
-        }
-        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
-        {
-            return _dbSet.Where(where).AsEnumerable();
         }
         #endregion
 
@@ -83,13 +108,38 @@ namespace MadPay724.Repo.Infrastructure
         {
             return await _dbSet.ToListAsync();
         }
+        public async Task<IEnumerable<TEntity>> GetManyAsync(
+      Expression<Func<TEntity, bool>> filter = null,
+      Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+      string includeEntity = "")
+        {
+            //return _dbSet.Where(where).FirstOrDefault();
+
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeentity in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeentity);
+            }
+
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+            else
+            {
+                return await query.ToListAsync();
+            }
+
+        }
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
         {
             return await _dbSet.Where(where).FirstOrDefaultAsync();
-        }
-        public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
-        {
-            return await _dbSet.Where(where).ToListAsync();
         }
 
 
@@ -121,5 +171,6 @@ namespace MadPay724.Repo.Infrastructure
         }
 
         #endregion
+
     }
 }

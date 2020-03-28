@@ -6,45 +6,45 @@ using AutoMapper;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Repo.Infrastructure;
-using MadPay724.Services.Site.Admin.Auth.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace MadPay724.Presentation.Controllers.Site.Admin
 {
-
+    [Authorize]
     [ApiExplorerSettings(GroupName = "Site")]
     [Route("site/admin/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
-
         private readonly IUnitOfWork<MadpayDbContext> _db;
-        private readonly IMapper  _mapper;
-
-        public UsersController(IUnitOfWork<MadpayDbContext> dbContex, IMapper mapper)
+        private readonly IMapper _mapper;
+        public UsersController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper)
         {
-            _db = dbContex;
+            _db = dbContext;
             _mapper = mapper;
-
-
         }
+
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _db.UserRepository.GetAllAsync();
+            var users = await _db.UserRepository.GetManyAsync(null, null, "Photos,BankCards");
 
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
+
             return Ok(usersToReturn);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
-            var user = await _db.UserRepository.GetByIdAsync(id);
-            var userToReturn = _mapper.Map<IEnumerable<UserForDetailedDto>>(user);
+            var user = await _db.UserRepository.GetManyAsync(p => p.Id == id, null, "Photos");
+
+            var userToReturn = _mapper.Map<UserForDetailedDto>(user.SingleOrDefault());
+
             return Ok(userToReturn);
         }
+
     }
 }
