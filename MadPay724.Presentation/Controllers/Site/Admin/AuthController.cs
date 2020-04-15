@@ -71,7 +71,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> login(UserForLoginDto userForLoginDto)
-        {
+        {   
             
             var userFromRepo = await _authService.Login(userForLoginDto.UserName, userForLoginDto.Password);
             if (userFromRepo == null)
@@ -110,36 +110,6 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             
         }
 
-
-        [AllowAnonymous]
-        [HttpGet("GetValue")]
-        public async Task<IActionResult> GetValue()
-        {
-           
-            return Ok(new returnMessage()
-            {
-                status = true,
-                title = "اوکی",
-                message = "نام کاربری وجود دارد",
-
-
-            });
-        }
-
-
-        
-        [HttpGet("GetValues")]
-        public async Task<IActionResult> GetValues()
-        {
-
-            return Ok(new returnMessage()
-            {
-                status = true,
-                title = "اوکی",
-                message = "نام کاربری وجود دارد",
-
-
-            });
-        }
+       
     }
 }

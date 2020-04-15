@@ -37,9 +37,13 @@ namespace MadPay724.Presentation
             services.AddControllers().AddNewtonsoftJson(options =>
              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddCors();
+
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUnitOfWork<MadpayDbContext>, UnitOfWork<MadpayDbContext>>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
@@ -109,6 +113,7 @@ namespace MadPay724.Presentation
             //
 
             services.AddTransient<ISeedService, SeedService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

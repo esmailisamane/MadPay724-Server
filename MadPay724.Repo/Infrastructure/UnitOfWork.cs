@@ -32,6 +32,20 @@ namespace MadPay724.Repo.Infrastructure
             }
         }
 
+
+        private IPhotoRepository photoRepository;
+        public IPhotoRepository PhotoRepository
+        {
+            get
+            {
+                if (photoRepository == null)
+                {
+                    photoRepository = new PhotoRepository(_db);
+                }
+                return photoRepository;
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -52,14 +66,21 @@ namespace MadPay724.Repo.Infrastructure
             GC.SuppressFinalize(this);
         }
 
-        public void Save()
+        public bool Save()
         {
-            _db.SaveChanges();
+            if ( _db.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+            
         }
 
-        public async Task<int> saveAsync()
+        public async Task<bool> saveAsync()
         {
-            return await _db.SaveChangesAsync();
+            if (await _db.SaveChangesAsync() > 0)
+                return true;
+            else
+                return false;
         }
 
         ~UnitOfWork()

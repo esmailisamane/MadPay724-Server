@@ -11,7 +11,8 @@ namespace MadPay724.Repo.Infrastructure
   public  interface IUnitOfWork<TContext> :IDisposable where TContext:DbContext
     {
         IUserRepository UserRepository { get;}
-        void Save();
-        Task<int> saveAsync();
+        IPhotoRepository PhotoRepository { get; }
+        bool Save();
+        Task<bool> saveAsync();
     }
 }
