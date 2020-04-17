@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin;
@@ -28,11 +29,13 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         private readonly IUnitOfWork<MadpayDbContext> _db;
         private readonly IAuthService _authService;
         private readonly IConfiguration _config;
-        public AuthController(IUnitOfWork<MadpayDbContext> dbContex, IAuthService authService,IConfiguration config)
+        private readonly IMapper _mapper;
+        public AuthController(IUnitOfWork<MadpayDbContext> dbContex, IAuthService authService,IConfiguration config, IMapper mapper)
         {
             _db = dbContex;
             _authService = authService;
             _config = config;
+            _mapper = mapper;
         }
         [AllowAnonymous]
         [HttpPost("register")]
@@ -64,7 +67,17 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
                 Status = true,
             };
 
-            var createdUser = await _authService.Register(userToCreate, userForRegisterDto.Password);
+            var photoToCreate = new Photo
+            {
+               UserId = userToCreate.Id,
+               Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, Request.PathBase.Value, "wwwroot/Files/Pic/profilepic.png"),
+               Description="Profile Pic",
+               Alt= "Profile Pic",
+               IsMain= true,
+               PublicId="0",
+            };
+
+            var createdUser = await _authService.Register(userToCreate, photoToCreate, userForRegisterDto.Password);
             return StatusCode(201);
         }
 
@@ -103,9 +116,12 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDes);
+
+            var user = _mapper.Map<UserForDetailedDto>(userFromRepo);
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+                user
             });
             
         }

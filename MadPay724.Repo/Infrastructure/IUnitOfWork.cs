@@ -12,6 +12,7 @@ namespace MadPay724.Repo.Infrastructure
     {
         IUserRepository UserRepository { get;}
         IPhotoRepository PhotoRepository { get; }
+        ISettingRepository SettingRepository { get; }
         bool Save();
         Task<bool> saveAsync();
     }

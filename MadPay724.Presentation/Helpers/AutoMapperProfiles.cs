@@ -25,9 +25,10 @@ namespace MadPay724.Presentation.Helpers
                         opt.MapFrom(src => src.DateOfBirth.ToAge());
                     });
             CreateMap<Photo, PhotoForUserDetailedDto>();
+            CreateMap<PhotoForProfileDto, Photo>();
+            CreateMap<Photo, PhotoForReturnProfileDto>();
             CreateMap<BankCard, BankcardForUserDetailedDto>();
             CreateMap<UserForUpdateDto, User>();
-            CreateMap<PhotoForProfileDto,Photo > ();
 
         }
 

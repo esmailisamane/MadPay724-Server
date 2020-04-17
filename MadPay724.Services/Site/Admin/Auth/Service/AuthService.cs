@@ -5,6 +5,7 @@ using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +22,8 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
         }
         public async Task<User> Login(string username, string password)
         {
-            var user = await _db.UserRepository.GetAsync(p => p.UserName == username);
+            var users = await _db.UserRepository.GetManyAsync(p => p.UserName == username, null, "Photos");
+            var user = users.SingleOrDefault();
             if(user == null)
             {
                 return null;
@@ -36,7 +38,7 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
 
        
 
-        public async Task<User> Register(User user, string password)
+        public async Task<User> Register(User user, Photo photo, string password)
         {
             byte[] passwordHash, passwordSalt;
             Utilities.CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -44,6 +46,7 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             await _db.UserRepository.InsertAsync(user);
+            await _db.PhotoRepository.InsertAsync(photo);
             await _db.saveAsync();
 
             return user;

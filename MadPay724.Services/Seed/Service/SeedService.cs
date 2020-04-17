@@ -19,7 +19,7 @@ namespace MadPay724.Services.Seed.Service
 
         public void  SeedUsers()
         {
-            var userdata = System.IO.File.ReadAllText("Files/Json/Seed/UserSeedData.json");
+            var userdata = System.IO.File.ReadAllText("wwwroot/Files/Json/Seed/UserSeedData.json");
             var users = JsonConvert.DeserializeObject<IList<User>>(userdata);
 
             foreach (var user in users)

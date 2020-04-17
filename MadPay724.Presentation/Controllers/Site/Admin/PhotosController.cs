@@ -1,89 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using MadPay724.Common.Helpers;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin.Photos;
-using MadPay724.Data.Models;
 using MadPay724.Repo.Infrastructure;
+using MadPay724.Services.Upload.Interface;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+
 
 namespace MadPay724.Presentation.Controllers.Site.Admin
 {
     [Authorize]
     [ApiExplorerSettings(GroupName = "Site")]
-    [Route("site/admin/{userId}/photos")]
+    [Route("site/admin/users/{userId}/photos")]
     [ApiController]
     public class PhotosController : ControllerBase
     {
         private readonly IUnitOfWork<MadpayDbContext> _db;
         private readonly IMapper _mapper;
-        private readonly IOptions<CloudinarySettings> _cloudinaryConfige;
-        private readonly Cloudinary _cloudinary;
-        public PhotosController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfige)
+        private readonly IUploadService _uploadService;
+        private readonly IWebHostEnvironment _env;
+
+
+        public PhotosController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IUploadService uploadService, IWebHostEnvironment env)
         {
+            _env = env;
             _db = dbContext;
             _mapper = mapper;
-            _cloudinaryConfige = cloudinaryConfige;
-            Account acc = new Account(
-                          _cloudinaryConfige.Value.CloudName,
-                          _cloudinaryConfige.Value.APIKey,
-                          _cloudinaryConfige.Value.APISecret);
-            _cloudinary = new Cloudinary(acc);
+            _uploadService = uploadService;
 
 
+
+        }
+
+        [HttpGet("{id}", Name = "GetPhoto")]
+        public async Task<IActionResult> GetPhoto(string id)
+        {
+            var photoFromRepo = await _db.PhotoRepository.GetByIdAsync(id);
+
+            var photo = _mapper.Map<PhotoForReturnProfileDto>(photoFromRepo);
+            return Ok(photo);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeUserPhoto(string userId,[FromForm] PhotoForProfileDto photoForProfileDto)
+        public async Task<IActionResult> ChangeUserPhoto(string userId, [FromForm]PhotoForProfileDto photoForProfileDto)
         {
-            if(userId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            if (userId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
             {
                 return Unauthorized("شما اجازه تغییر تصویر این کاربر را ندارید");
             }
-            var userFromRepo = await _db.UserRepository.GetByIdAsync(userId);
-            var file = photoForProfileDto.File;
-            var uploadResult = new ImageUploadResult();
-            if(file.Length> 0)
+
+            //var userFromRepo = await _db.UserRepository.GetByIdAsync(userId);
+
+            // var uplaodRes = _uploadService.UploadToCloudinary(photoForProfileDto.File);
+
+            var uplaodRes = await _uploadService.UploadToLocal(
+                photoForProfileDto.File,
+                userId,
+                _env.WebRootPath,
+                string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.Value, Request.PathBase.Value)
+                );
+
+            if (uplaodRes.Status)
             {
-                using (var stream = file.OpenReadStream())
+                photoForProfileDto.Url = uplaodRes.Url;
+                photoForProfileDto.PublicId = uplaodRes.PublicId;
+
+
+                var oldphoto = await _db.PhotoRepository.GetAsync(p => p.UserId == userId && p.IsMain);
+
+                if (oldphoto.PublicId != null && oldphoto.PublicId != "0")
                 {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(file.Name, stream),
-                        Transformation = new Transformation().Width(250).Height(250).Crop("fill").Gravity("face")
-                    };
-
-                    uploadResult = _cloudinary.Upload(uploadParams);
+                    _uploadService.RemoveFileFromCloudinary(oldphoto.PublicId);
                 }
-            }
 
-            photoForProfileDto.Url = uploadResult.Uri.ToString();
-            photoForProfileDto.PublicId = uploadResult.PublicId;
+                _mapper.Map(photoForProfileDto, oldphoto);
 
-            var photo = _mapper.Map<Photo>(photoForProfileDto);
+                _db.PhotoRepository.Update(oldphoto);
 
-            await _db.PhotoRepository.InsertAsync(photo);
-            if(await _db.saveAsync())
-            {
-                return Ok();
+                if (await _db.saveAsync())
+                {
+                    var photoForReturn = _mapper.Map<PhotoForReturnProfileDto>(oldphoto);
+                    return CreatedAtRoute("GetPhoto", routeValues: new { id = oldphoto.Id }, value: photoForReturn);
+                }
+                else
+                {
+                    return BadRequest("خطایی در اپلود دوباره امتحان کنید");
+                }
             }
             else
             {
-                return BadRequest("خطا در آپلود ! دوباره امتحان کنید.");
+                return BadRequest(uplaodRes.Message);
             }
-           
-
         }
-
 
     }
 }

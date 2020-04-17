@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -9,6 +10,8 @@ using MadPay724.Services.Seed.Interface;
 using MadPay724.Services.Seed.Service;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using MadPay724.Services.Site.Admin.Auth.Service;
+using MadPay724.Services.Upload.Interface;
+using MadPay724.Services.Upload.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -16,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors.Security;
@@ -34,16 +38,28 @@ namespace MadPay724.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(options =>
-             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc(opt => opt.EnableEndpointRouting = false)
+                 .AddNewtonsoftJson(opt =>
+                 {
+                     opt.SerializerSettings.ReferenceLoopHandling =
+                     Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                 });
+
+
+
+
             services.AddCors();
 
-            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+           // services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
 
             services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<IUnitOfWork<MadpayDbContext>, UnitOfWork<MadpayDbContext>>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUploadService, UploadService>(); 
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
@@ -142,7 +158,7 @@ namespace MadPay724.Presentation
 
             //seeder.SeedUsers();
             //app.UseHttpsRedirection();
-            app.UseCors(p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(p => p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -150,13 +166,19 @@ namespace MadPay724.Presentation
             // swagger
             app.UseOpenApi();
             app.UseSwaggerUi3();
-           
+
             //
-           
-            app.UseEndpoints(endpoints =>
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
+            app.UseStaticFiles(new StaticFileOptions()
             {
-                endpoints.MapControllers();
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
+                RequestPath = new PathString("/wwwroot")
             });
+            app.UseMvc();
         }
     }
 }

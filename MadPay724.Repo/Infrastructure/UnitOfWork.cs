@@ -46,6 +46,19 @@ namespace MadPay724.Repo.Infrastructure
             }
         }
 
+        private ISettingRepository settingRepository;
+        public ISettingRepository SettingRepository
+        {
+            get
+            {
+                if (settingRepository == null)
+                {
+                    settingRepository = new SettingRepository(_db);
+                }
+                return settingRepository;
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
