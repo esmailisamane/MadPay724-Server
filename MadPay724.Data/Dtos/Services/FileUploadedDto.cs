@@ -10,5 +10,6 @@ namespace MadPay724.Data.Dtos.Services
         public string Url { get; set; }
         public string PublicId { get; set; } = "0";
         public string Message { get; set; }
+        public bool LocalUploaded { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using MadPay724.Services.Site.Admin.Auth.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MadPay724.Presentation.Controllers.Site.Admin
 {
@@ -24,11 +25,13 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         private readonly IUnitOfWork<MadpayDbContext> _db;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        public UsersController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IUserService userService)
+        private readonly ILogger<UsersController> _logger;
+        public UsersController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IUserService userService, ILogger<UsersController> logger)
         {
             _db = dbContext;
             _mapper = mapper;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -66,6 +69,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         {
            if(id != User.FindFirst(ClaimTypes.NameIdentifier).Value)
             {
+                _logger.LogError($"{id} :You are not allowed to edit this user!");
                 return Unauthorized("شما اجازه ویرایش این کاربر را ندارید");
             }
             var userFromRepo = await _db.UserRepository.GetByIdAsync(id);

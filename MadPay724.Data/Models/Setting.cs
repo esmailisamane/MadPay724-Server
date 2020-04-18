@@ -19,5 +19,7 @@ namespace MadPay724.Data.Models
         public string CloudinaryAPIKey { get; set; }
         [Required]
         public string CloudinaryAPISecret { get; set; }
+        [Required]
+        public bool UploadLocal { get; set; }
     }
 }

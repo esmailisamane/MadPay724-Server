@@ -1,22 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MadPay724.Data.Migrations
+namespace MadPay724.Data.Migrations.MadpayMigrations
 {
-    public partial class Photopublicid : Migration
+    public partial class changebank : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "PublicId",
-                table: "Photos",
-                nullable: true);
+                name: "OwnerName",
+                table: "BankCards",
+                nullable: false,
+                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PublicId",
-                table: "Photos");
+                name: "OwnerName",
+                table: "BankCards");
         }
     }
 }

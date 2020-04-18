@@ -34,14 +34,22 @@ namespace MadPay724.Services.Upload.Service
             _cloudinary = new Cloudinary(acc);
 
         }
-        //public Task<FileUploadedDto> UploadFile(IFormFile file)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<FileUploadedDto> UploadProfilePic(IFormFile file, string userId, string userName, string WebRootPath, string UrlBegan)
+        {
+           
+            if (_setting.UploadLocal)
+            {
+                return await UploadProfilePicToLocal(file, userId, WebRootPath, UrlBegan);
+            }
+            else
+            {
+                return UploadProfilePicToCloudinary(file, userName);
+            }
+        }
 
 
 
-        public async Task<FileUploadedDto> UploadToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan)
+        public async Task<FileUploadedDto> UploadProfilePicToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan)
         {
 
             if (file.Length > 0)
@@ -62,6 +70,7 @@ namespace MadPay724.Services.Upload.Service
                     return new FileUploadedDto()
                     {
                         Status = true,
+                        LocalUploaded = true,
                         Message = "با موفقیت آپلود شد",
                         PublicId = "0",
                         Url = string.Format("{0}/{1}", UrlBegan, "wwwroot/Files/Pic/Profile/"+ fileNewName)
@@ -86,7 +95,7 @@ namespace MadPay724.Services.Upload.Service
             }
         }
 
-        public FileUploadedDto UploadToCloudinary(IFormFile file)
+        public FileUploadedDto UploadProfilePicToCloudinary(IFormFile file , string userName)
         {
 
             var updaodResult = new ImageUploadResult();
@@ -100,7 +109,8 @@ namespace MadPay724.Services.Upload.Service
                         var uplaodParams = new ImageUploadParams()
                         {
                             File = new FileDescription(file.Name, stream),
-                            Transformation = new Transformation().Width(150).Height(150).Crop("fill").Gravity("face")
+                            Transformation = new Transformation().Width(150).Height(150).Crop("fill").Gravity("face"),
+                            Folder = "ProfilePic/"+ userName
                         };
 
 
@@ -111,6 +121,7 @@ namespace MadPay724.Services.Upload.Service
                             return new FileUploadedDto()
                             {
                                 Status = true,
+                                LocalUploaded = false,
                                 Message = "با موفقیت در فضای ابری آپلود شد.",
                                 PublicId = updaodResult.PublicId,
                                 Url = updaodResult.Uri.ToString()
@@ -164,8 +175,31 @@ namespace MadPay724.Services.Upload.Service
             {
                 return new FileUploadedDto()
                 {
+                    Status = false,
+                   
+                };
+            }
+        }
+
+        public FileUploadedDto RemoveFileFromLocal(string photoName, string WebRootPath, string filePath)
+        {
+            string path = Path.Combine(WebRootPath, filePath);
+            string fullPath = Path.Combine(path, photoName);
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+                return new FileUploadedDto()
+                {
                     Status = true,
-                    Message = deleteResult.Error.Message
+                    Message = "فایل با موفقیت حذف شد"
+                };
+            }
+            else
+            {
+                return new FileUploadedDto()
+                {
+                    Status = true,
+                    Message = "فایلی وجود نداشت"
                 };
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using MadPay724.Data.DatabaseContext;
@@ -22,6 +23,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         private readonly IMapper _mapper;
         private readonly IUploadService _uploadService;
         private readonly IWebHostEnvironment _env;
+       
 
 
         public PhotosController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IUploadService uploadService, IWebHostEnvironment env)
@@ -30,6 +32,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             _db = dbContext;
             _mapper = mapper;
             _uploadService = uploadService;
+          
 
 
 
@@ -56,9 +59,10 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 
             // var uplaodRes = _uploadService.UploadToCloudinary(photoForProfileDto.File);
 
-            var uplaodRes = await _uploadService.UploadToLocal(
+            var uplaodRes = await _uploadService.UploadProfilePic(
                 photoForProfileDto.File,
                 userId,
+                User.FindFirst(ClaimTypes.Name).Value,
                 _env.WebRootPath,
                 string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.Value, Request.PathBase.Value)
                 );
@@ -66,15 +70,31 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             if (uplaodRes.Status)
             {
                 photoForProfileDto.Url = uplaodRes.Url;
-                photoForProfileDto.PublicId = uplaodRes.PublicId;
+                if (uplaodRes.LocalUploaded)
+                    photoForProfileDto.PublicId ="1";
+                
+                else
+                    photoForProfileDto.PublicId = uplaodRes.PublicId;
+                
+                
 
 
                 var oldphoto = await _db.PhotoRepository.GetAsync(p => p.UserId == userId && p.IsMain);
 
-                if (oldphoto.PublicId != null && oldphoto.PublicId != "0")
+                if (oldphoto.PublicId != null && oldphoto.PublicId != "0" && oldphoto.PublicId != "1")
                 {
                     _uploadService.RemoveFileFromCloudinary(oldphoto.PublicId);
                 }
+                if (oldphoto.PublicId == photoForProfileDto.PublicId && photoForProfileDto.Url.Split('/').Last() != oldphoto.Url.Split('/').Last())
+                {
+                    _uploadService.RemoveFileFromLocal(oldphoto.Url.Split('/').Last(), _env.WebRootPath, "Files\\Pic\\Profile");
+                }
+
+                if (oldphoto.PublicId == "1" && photoForProfileDto.PublicId != "1")
+                {
+                    _uploadService.RemoveFileFromLocal(oldphoto.Url.Split('/').Last(), _env.WebRootPath, "Files\\Pic\\Profile");
+                }
+
 
                 _mapper.Map(photoForProfileDto, oldphoto);
 

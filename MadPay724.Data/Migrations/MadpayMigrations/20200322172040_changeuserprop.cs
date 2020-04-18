@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MadPay724.Data.Migrations
+namespace MadPay724.Data.Migrations.MadpayMigrations
 {
-    public partial class user : Migration
+    public partial class changeuserprop : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<bool>(
-                name: "Gender",
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "DateOfBirth",
                 table: "Users",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -18,11 +19,11 @@ namespace MadPay724.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Gender",
+                name: "DateOfBirth",
                 table: "Users",
                 type: "nvarchar(max)",
                 nullable: true,
-                oldClrType: typeof(bool));
+                oldClrType: typeof(DateTime));
         }
     }
 }
