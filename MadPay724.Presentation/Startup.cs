@@ -5,6 +5,7 @@ using System.Text;
 using AutoMapper;
 using MadPay724.Common.Helpers;
 using MadPay724.Data.DatabaseContext;
+using MadPay724.Presentation.Helpers.Filters;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Seed.Interface;
 using MadPay724.Services.Seed.Service;
@@ -53,11 +54,13 @@ namespace MadPay724.Presentation
            // services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IUnitOfWork<MadpayDbContext>, UnitOfWork<MadpayDbContext>>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUploadService, UploadService>(); 
+            services.AddScoped<IUploadService, UploadService>();
+            services.AddScoped<LogFilter>();
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
