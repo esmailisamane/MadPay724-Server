@@ -1,7 +1,9 @@
 ﻿
+using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Presentation;
 using MadPay724.Test.Providers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,32 +32,32 @@ namespace MadPay724.Test.ControllersTests
         [Fact]
         public async Task GetUser_CantGetAnOtherUser()
         {
-            // Arrange
+            // Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "0d47394e-672f-4db7-898c-bfd8f32e2af7";
             var request = "/site/admin/Users/" + anOtherUserId;
 
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", _AToken);
 
-            //Act
+            //Act------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.GetAsync(request);
 
-            //Assert
+            //Assert------------------------------------------------------------------------------------------------------------------------------
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
         [Fact]
         public async Task GetUser_CanGetUserHimself()
         {
-            // Arrange
+            // Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimSelfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
             var request = "/site/admin/Users/" + userHimSelfId;
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", _AToken);
 
-            //Act
+            //Act------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.GetAsync(request);
 
-            //Assert
+            //Assert------------------------------------------------------------------------------------------------------------------------------
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -65,7 +67,7 @@ namespace MadPay724.Test.ControllersTests
         [Fact]
         public async Task UpdateUser_CantUpdateAnOtherUser()
         {
-            // Arrange
+            // Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
             var request = new
             {
@@ -82,17 +84,17 @@ namespace MadPay724.Test.ControllersTests
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", _AToken);
 
-            //Act
+            //Act------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
             var value = await response.Content.ReadAsStringAsync();
 
-            //Assert
+            //Assert------------------------------------------------------------------------------------------------------------------------------
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
         [Fact]
         public async Task UpdateUser_CanUpdateUserHimself()
         {
-            // Arrange
+            // Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
             var request = new
             {
@@ -109,11 +111,11 @@ namespace MadPay724.Test.ControllersTests
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", _AToken);
 
-            //Act
+            //Act------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
             var value = await response.Content.ReadAsStringAsync();
 
-            //Assert
+            //Assert------------------------------------------------------------------------------------------------------------------------------
             response.EnsureSuccessStatusCode();
             // response.StatusCode.Should().Be(HttpStatusCode.NoContent);
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -122,7 +124,7 @@ namespace MadPay724.Test.ControllersTests
         [Fact]
         public async Task UpdateUser_ModelStateError()
         {
-            // Arrange
+            // Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
             var request = new
             {
@@ -141,14 +143,14 @@ namespace MadPay724.Test.ControllersTests
             var controller = new ModelStateControllerTests();
 
 
-            //Act
+            //Act------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
             var value = await response.Content.ReadAsStringAsync();
 
             controller.ValidateModelState(request.Body);
             var modelState = controller.ModelState;
 
-            //Assert
+            //Assert------------------------------------------------------------------------------------------------------------------------------
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
             Assert.False(modelState.IsValid);
@@ -160,7 +162,117 @@ namespace MadPay724.Test.ControllersTests
         #endregion
 
         #region ChangeUserPasswordTests
+        [Fact]
+        public async Task ChangeUserPassword_Can_Himself()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+            string userHimselfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
+            var request = new
+            {
+                Url = "/site/admin/Users/ChangeUserPassword/" + userHimselfId,
+                Body = new PasswordForChangeDto
+                {
+                    OldPassword = "12345",
+                    NewPassword = "12345"
+                }
+            };
+            _client.DefaultRequestHeaders.Authorization
+           = new AuthenticationHeaderValue("Bearer", _AToken);
 
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+            var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        [Fact]
+        public async Task ChangeUserPassword_Cant_AnOtherUser()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+            string anOtherUserId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
+            var request = new
+            {
+                Url = "/site/admin/Users/ChangeUserPassword/" + anOtherUserId,
+                Body = new PasswordForChangeDto
+                {
+                    OldPassword = "12345",
+                    NewPassword = "12345"
+                }
+            };
+            _client.DefaultRequestHeaders.Authorization
+           = new AuthenticationHeaderValue("Bearer", _AToken);
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+            var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task ChangeUserPassword_Cant_Himself_WrongOldPassword()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+            string userHimselfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
+            var request = new
+            {
+                Url = "/site/admin/Users/ChangeUserPassword/" + userHimselfId,
+                Body = new PasswordForChangeDto
+                {
+                    OldPassword = "12345678",
+                    NewPassword = "12345"
+                }
+            };
+            _client.DefaultRequestHeaders.Authorization
+           = new AuthenticationHeaderValue("Bearer", _AToken);
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+            var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+            var value = await response.Content.ReadAsStringAsync();
+            var valueObj = JsonConvert.DeserializeObject<returnMessage>(value);
+
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.False(valueObj.status);
+            Assert.Equal("پسورد قبلی اشتباه می باشد", valueObj.message);
+
+
+        }
+        [Fact]
+        public async Task ChangeUserPassword_ModelStateError()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+            string userHimselfId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
+            var request = new
+            {
+                Url = "/site/admin/Users/ChangeUserPassword/" + userHimselfId,
+                Body = new PasswordForChangeDto
+                {
+                    OldPassword = string.Empty,
+                    NewPassword = string.Empty
+                }
+            };
+            _client.DefaultRequestHeaders.Authorization
+           = new AuthenticationHeaderValue("Bearer", _AToken);
+
+            var controller = new ModelStateControllerTests();
+
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+            var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+
+            controller.ValidateModelState(request.Body);
+            var modelState = controller.ModelState;
+
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Assert.False(modelState.IsValid);
+            Assert.Equal(2, modelState.Keys.Count());
+            Assert.True(modelState.Keys.Contains("OldPassword") && modelState.Keys.Contains("NewPassword"));
+
+        }
         #endregion
     }
 }

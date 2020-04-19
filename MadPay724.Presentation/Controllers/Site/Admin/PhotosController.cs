@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin.Photos;
+using MadPay724.Presentation.Helpers.Filters;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Upload.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +38,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 
 
         }
-
+        [ServiceFilter(typeof(UserCkeckIdFilter))]
         [HttpGet("{id}", Name = "GetPhoto")]
         public async Task<IActionResult> GetPhoto(string id)
         {
@@ -47,6 +48,8 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             return Ok(photo);
         }
 
+
+        [ServiceFilter(typeof(UserCkeckIdFilter))]
         [HttpPost]
         public async Task<IActionResult> ChangeUserPhoto(string userId, [FromForm]PhotoForProfileDto photoForProfileDto)
         {

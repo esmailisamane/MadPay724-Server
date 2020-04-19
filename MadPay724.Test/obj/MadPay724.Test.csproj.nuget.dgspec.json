@@ -448,6 +448,10 @@
               "target": "Package",
               "version": "[4.13.1, )"
             },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
             "coverlet.collector": {
               "target": "Package",
               "version": "[1.2.0, )"

@@ -14,22 +14,38 @@ namespace MadPay724.Presentation.Helpers.Filters
         private readonly IHttpContextAccessor _httpContextAcc;
         public UserCkeckIdFilter(ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAcc)
         {
-            _logger = loggerFactory.CreateLogger("UserCkeckIdFilter");
+            _logger = loggerFactory.CreateLogger("UserCheckIdFilter");
             _httpContextAcc = httpContextAcc;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.RouteData.Values["id"].ToString() == _httpContextAcc.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            if (context.RouteData.Values["id"] != null && context.RouteData.Values["userId"] == null)
             {
-                base.OnActionExecuting(context);
+                if (context.RouteData.Values["id"].ToString() == _httpContextAcc.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                {
+                    base.OnActionExecuting(context);
+                }
+                else
+                {
+                    _logger.LogError($"کاربر  آقا/خانم {context.RouteData.Values["id"].ToString()} درخواست غیرمحاز برای ویرایش/مشاهده یوزر دیگیری کرده است ");
+
+                    context.Result = new UnauthorizedResult();
+                }
             }
             else
             {
-                _logger.LogError($"درخواست غیرمجاز از کاربر {context.RouteData.Values["id"].ToString()}");
-                context.Result = new UnauthorizedResult();
+                if (context.RouteData.Values["userId"].ToString() == _httpContextAcc.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                {
+                    base.OnActionExecuting(context);
+                }
+                else
+                {
+                    _logger.LogError($"کاربر  آقا/خانم {context.RouteData.Values["userId"].ToString()} درخواست غیرمحاز برای ویرایش/مشاهده یوزر دیگیری کرده است ");
+
+                    context.Result = new UnauthorizedResult();
+                }
             }
 
-           
         }
     }
 }
