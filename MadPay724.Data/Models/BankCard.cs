@@ -15,15 +15,15 @@ namespace MadPay724.Data.Models
             DateModified = DateTime.Now;
         }
         [Required]
-        [StringLength(0, MinimumLength = 50)]
+        [StringLength(50, MinimumLength = 0)]
         public string BankName { get; set; }
-        [StringLength(0, MinimumLength = 100)]
+        [StringLength(100, MinimumLength = 0)]
         public string Shaba { get; set; }
         [Required]
-        [StringLength(0, MinimumLength = 100)]
+        [StringLength(100, MinimumLength = 0)]
         public string OwnerName { get; set; }
         [Required]
-        [StringLength(0, MinimumLength = 20)]
+        [StringLength(20, MinimumLength = 0)]
         public string CardNumber { get; set; }
         [Required]
         [StringLength(2,MinimumLength =2)]

@@ -35,7 +35,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             _userService = userService;
             _logger = logger;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
@@ -48,16 +48,9 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 
 
         [HttpGet("{id}")]
+        [ServiceFilter(typeof(UserCkeckIdFilter))]
         public async Task<IActionResult> GetUser(string id)
         {
-            //if(User.FindFirst(ClaimTypes.NameIdentifier).Value == id)
-            //{
-
-            //}
-            //else
-            //{
-            //    return Unauthorized("شما به این اطلاعات دسترسی ندارید");
-            //}
             var user = await _db.UserRepository.GetManyAsync(p => p.Id == id, null, "Photos");
 
             var userToReturn = _mapper.Map<UserForDetailedDto>(user.SingleOrDefault());
@@ -67,13 +60,10 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 
 
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(UserCkeckIdFilter))]
         public async Task<IActionResult> UpdateUser(string id, UserForUpdateDto userForUpdateDto)
         {
-           if(id != User.FindFirst(ClaimTypes.NameIdentifier).Value)
-            {
-                _logger.LogError($"درخواست غیرمجاز از کاربر {userForUpdateDto.Name}");
-                return Unauthorized("شما اجازه ویرایش این کاربر را ندارید");
-            }
+          
             var userFromRepo = await _db.UserRepository.GetByIdAsync(id);
             _mapper.Map(userForUpdateDto, userFromRepo);
             _db.UserRepository.Update(userFromRepo);

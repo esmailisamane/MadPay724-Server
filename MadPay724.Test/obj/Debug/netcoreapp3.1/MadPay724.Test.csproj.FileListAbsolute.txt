@@ -241,4 +241,13 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.TestHost.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Web.Mvc.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Web.Razor.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Web.Helpers.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Web.WebPages.Deployment.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Web.WebPages.Razor.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Web.WebPages.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Web.Infrastructure.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Moq.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\obj\Debug\netcoreapp3.1\MadPay724.Test.csproj.CoreCompileInputs.cache

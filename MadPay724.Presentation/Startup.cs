@@ -60,7 +60,7 @@ namespace MadPay724.Presentation
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUploadService, UploadService>();
-            services.AddScoped<LogFilter>();
+            services.AddScoped<UserCkeckIdFilter>();
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

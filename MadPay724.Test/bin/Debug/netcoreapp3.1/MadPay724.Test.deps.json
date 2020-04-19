@@ -11,6 +11,7 @@
           "MadPay724.Presentation": "1.0.0",
           "Microsoft.AspNetCore.TestHost": "3.1.3",
           "Microsoft.NET.Test.Sdk": "16.2.0",
+          "Moq": "4.13.1",
           "coverlet.collector": "1.2.0",
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0"
@@ -43,6 +44,26 @@
           }
         }
       },
+      "Castle.Core/4.4.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Collections.Specialized": "4.3.0",
+          "System.ComponentModel": "4.3.0",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Diagnostics.TraceSource": "4.3.0",
+          "System.Dynamic.Runtime": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Emit": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.5/Castle.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.4.0.0"
+          }
+        }
+      },
       "CloudinaryDotNet/1.10.0": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -55,6 +76,50 @@
         }
       },
       "coverlet.collector/1.2.0": {},
+      "Microsoft.AspNet.Mvc/5.2.7": {
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.2.7",
+          "Microsoft.AspNet.WebPages": "3.2.7"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Mvc.dll": {
+            "assemblyVersion": "5.2.7.0",
+            "fileVersion": "5.2.61128.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.Razor/3.2.7": {
+        "runtime": {
+          "lib/net45/System.Web.Razor.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebPages/3.2.7": {
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.2.7",
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Helpers.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          },
+          "lib/net45/System.Web.WebPages.Deployment.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          },
+          "lib/net45/System.Web.WebPages.Razor.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          },
+          "lib/net45/System.Web.WebPages.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.2": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.5.0"
@@ -702,7 +767,7 @@
           "Microsoft.DotNet.InternalAbstractions": "1.0.0",
           "Newtonsoft.Json": "12.0.3",
           "System.Diagnostics.Debug": "4.3.0",
-          "System.Dynamic.Runtime": "4.0.11",
+          "System.Dynamic.Runtime": "4.3.0",
           "System.Linq": "4.3.0"
         },
         "runtime": {
@@ -901,7 +966,7 @@
           "System.ComponentModel.TypeConverter": "4.3.0",
           "System.Diagnostics.Process": "4.1.0",
           "System.Diagnostics.TextWriterTraceListener": "4.0.0",
-          "System.Diagnostics.TraceSource": "4.0.0",
+          "System.Diagnostics.TraceSource": "4.3.0",
           "System.Reflection.Metadata": "1.6.0",
           "System.Reflection.TypeExtensions": "4.3.0",
           "System.Runtime.InteropServices.RuntimeInformation": "4.3.0",
@@ -1251,6 +1316,14 @@
           }
         }
       },
+      "Microsoft.Web.Infrastructure/1.0.0": {
+        "runtime": {
+          "lib/net40/Microsoft.Web.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.20105.407"
+          }
+        }
+      },
       "Microsoft.Win32.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.2",
@@ -1262,6 +1335,18 @@
         "dependencies": {
           "System.Security.AccessControl": "4.5.0",
           "System.Security.Principal.Windows": "4.5.0"
+        }
+      },
+      "Moq/4.13.1": {
+        "dependencies": {
+          "Castle.Core": "4.4.0",
+          "System.Threading.Tasks.Extensions": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Moq.dll": {
+            "assemblyVersion": "4.13.0.0",
+            "fileVersion": "4.13.1.0"
+          }
         }
       },
       "Namotion.Reflection/1.0.11": {
@@ -1813,7 +1898,7 @@
       },
       "System.Diagnostics.TextWriterTraceListener/4.0.0": {
         "dependencies": {
-          "System.Diagnostics.TraceSource": "4.0.0",
+          "System.Diagnostics.TraceSource": "4.3.0",
           "System.Globalization": "4.3.0",
           "System.IO": "4.3.0",
           "System.Resources.ResourceManager": "4.3.0",
@@ -1828,7 +1913,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.Diagnostics.TraceSource/4.0.0": {
+      "System.Diagnostics.TraceSource/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.2",
           "System.Collections": "4.3.0",
@@ -1848,11 +1933,10 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.Dynamic.Runtime/4.0.11": {
+      "System.Dynamic.Runtime/4.3.0": {
         "dependencies": {
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
-          "System.Globalization": "4.3.0",
           "System.Linq": "4.3.0",
           "System.Linq.Expressions": "4.3.0",
           "System.ObjectModel": "4.3.0",
@@ -2713,6 +2797,7 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
           "MadPay724.Services": "1.0.0",
+          "Microsoft.AspNet.Mvc": "5.2.7",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.2",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.3",
           "Microsoft.IdentityModel.Tokens": "5.6.0",
@@ -2764,6 +2849,13 @@
       "path": "automapper.extensions.microsoft.dependencyinjection/7.0.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512"
     },
+    "Castle.Core/4.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-b5rRL5zeaau1y/5hIbI+6mGw3cwun16YjkHZnV9RRT5UyUIFsgLmNXJ0YnIN9p8Hw7K7AbG1q1UclQVU3DinAQ==",
+      "path": "castle.core/4.4.0",
+      "hashPath": "castle.core.4.4.0.nupkg.sha512"
+    },
     "CloudinaryDotNet/1.10.0": {
       "type": "package",
       "serviceable": true,
@@ -2777,6 +2869,27 @@
       "sha512": "sha512-ZB+EGXsVBIn8cew7D3S2c+rgIlokKv1dSwsXEoiFQaNXF/BSxp9Rlfz/jV1ehSWH5XpLitfRxFNW3ok7uPDOXA==",
       "path": "coverlet.collector/1.2.0",
       "hashPath": "coverlet.collector.1.2.0.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Mvc/5.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-m3hUsn48k6Qb5El9A8naTwGTLCdSQKGSpGweqIfiVKltGJzAJJxuXvhhaQQtLCGg3i5V88iGjz0JG72/tlFKlg==",
+      "path": "microsoft.aspnet.mvc/5.2.7",
+      "hashPath": "microsoft.aspnet.mvc.5.2.7.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Razor/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BpWEZ+Ys7g9VAkbAfpG5jr5A1fKcmadCCXv3fYfps5YfTVABJIGV4uc9yvmXKxsNsjL+BzDld2gs+xtgT2gg1g==",
+      "path": "microsoft.aspnet.razor/3.2.7",
+      "hashPath": "microsoft.aspnet.razor.3.2.7.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2jwZFB7PvY+tbdz0ZP4iEo7gMrJxkCQUzoGLh6swUc6ZXl6DoKyDslmGcC/j9PFmJXCRMVIqtRorlPSMU2DuRA==",
+      "path": "microsoft.aspnet.webpages/3.2.7",
+      "hashPath": "microsoft.aspnet.webpages.3.2.7.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.2": {
       "type": "package",
@@ -3324,6 +3437,13 @@
       "path": "microsoft.visualstudio.web.codegenerators.mvc/3.1.1",
       "hashPath": "microsoft.visualstudio.web.codegenerators.mvc.3.1.1.nupkg.sha512"
     },
+    "Microsoft.Web.Infrastructure/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg==",
+      "path": "microsoft.web.infrastructure/1.0.0",
+      "hashPath": "microsoft.web.infrastructure.1.0.0.nupkg.sha512"
+    },
     "Microsoft.Win32.Primitives/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -3337,6 +3457,13 @@
       "sha512": "sha512-+FWlwd//+Tt56316p00hVePBCouXyEzT86Jb3+AuRotTND0IYn0OO3obs1gnQEs/txEnt+rF2JBGLItTG+Be6A==",
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
+    },
+    "Moq/4.13.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ic4m9/b10tz9oRB1Oi5bW7E/FS6Pd2SH5OJFhlmhUJkQhiV5FyrIRxVUEaG5KOpSpcfSPGAVW4rRZt6OzrS5zg==",
+      "path": "moq/4.13.1",
+      "hashPath": "moq.4.13.1.nupkg.sha512"
     },
     "Namotion.Reflection/1.0.11": {
       "type": "package",
@@ -3758,12 +3885,12 @@
       "path": "system.diagnostics.tools/4.3.0",
       "hashPath": "system.diagnostics.tools.4.3.0.nupkg.sha512"
     },
-    "System.Diagnostics.TraceSource/4.0.0": {
+    "System.Diagnostics.TraceSource/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6WVCczFZKXwpWpzd/iJkYnsmWTSFFiU24Xx/YdHXBcu+nFI/ehTgeqdJQFbtRPzbrO3KtRNjvkhtj4t5/WwWsA==",
-      "path": "system.diagnostics.tracesource/4.0.0",
-      "hashPath": "system.diagnostics.tracesource.4.0.0.nupkg.sha512"
+      "sha512": "sha512-VnYp1NxGx8Ww731y2LJ1vpfb/DKVNKEZ8Jsh5SgQTZREL/YpWRArgh9pI8CDLmgHspZmLL697CaLvH85qQpRiw==",
+      "path": "system.diagnostics.tracesource/4.3.0",
+      "hashPath": "system.diagnostics.tracesource.4.3.0.nupkg.sha512"
     },
     "System.Diagnostics.Tracing/4.3.0": {
       "type": "package",
@@ -3772,12 +3899,12 @@
       "path": "system.diagnostics.tracing/4.3.0",
       "hashPath": "system.diagnostics.tracing.4.3.0.nupkg.sha512"
     },
-    "System.Dynamic.Runtime/4.0.11": {
+    "System.Dynamic.Runtime/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-db34f6LHYM0U0JpE+sOmjar27BnqTVkbLJhgfwMpTdgTigG/Hna3m2MYVwnFzGGKnEJk2UXFuoVTr8WUbU91/A==",
-      "path": "system.dynamic.runtime/4.0.11",
-      "hashPath": "system.dynamic.runtime.4.0.11.nupkg.sha512"
+      "sha512": "sha512-SNVi1E/vfWUAs/WYKhE9+qlS6KqK0YVhnlT0HQtr8pMIA8YX3lwy3uPMownDwdYISBdmAF/2holEIldVp85Wag==",
+      "path": "system.dynamic.runtime/4.3.0",
+      "hashPath": "system.dynamic.runtime.4.3.0.nupkg.sha512"
     },
     "System.Globalization/4.3.0": {
       "type": "package",

@@ -204,6 +204,10 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
+            "Microsoft.AspNet.Mvc": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[3.1.2, )"
@@ -439,6 +443,10 @@
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[16.2.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.13.1, )"
             },
             "coverlet.collector": {
               "target": "Package",
