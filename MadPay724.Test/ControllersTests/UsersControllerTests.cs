@@ -30,7 +30,7 @@ namespace MadPay724.Test.ControllersTests
 
         #region GetUserTests
         [Fact]
-        public async Task GetUser_CantGetAnOtherUser()
+        public async Task GetUser_Success_GetUserHimself()
         {
             // Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "0d47394e-672f-4db7-898c-bfd8f32e2af7";
@@ -46,7 +46,7 @@ namespace MadPay724.Test.ControllersTests
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
         [Fact]
-        public async Task GetUser_CanGetUserHimself()
+        public async Task GetUser_Fail_GetAnOtherUser()
         {
             // Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimSelfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
@@ -65,7 +65,7 @@ namespace MadPay724.Test.ControllersTests
 
         #region UpdateUserTests
         [Fact]
-        public async Task UpdateUser_CantUpdateAnOtherUser()
+        public async Task UpdateUser_Success_UpdateUserHimself()
         {
             // Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
@@ -92,7 +92,7 @@ namespace MadPay724.Test.ControllersTests
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
         [Fact]
-        public async Task UpdateUser_CanUpdateUserHimself()
+        public async Task UpdateUser_Fail_UpdateAnOtherUser()
         {
             // Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
@@ -122,7 +122,7 @@ namespace MadPay724.Test.ControllersTests
         }
 
         [Fact]
-        public async Task UpdateUser_ModelStateError()
+        public async Task UpdateUser_Fail_ModelStateError()
         {
             // Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
@@ -163,7 +163,7 @@ namespace MadPay724.Test.ControllersTests
 
         #region ChangeUserPasswordTests
         [Fact]
-        public async Task ChangeUserPassword_Can_Himself()
+        public async Task ChangeUserPassword_Success_Himself()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
@@ -187,7 +187,7 @@ namespace MadPay724.Test.ControllersTests
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
         [Fact]
-        public async Task ChangeUserPassword_Cant_AnOtherUser()
+        public async Task ChangeUserPassword_Fail_AnOtherUser()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
@@ -211,7 +211,7 @@ namespace MadPay724.Test.ControllersTests
         }
 
         [Fact]
-        public async Task ChangeUserPassword_Cant_Himself_WrongOldPassword()
+        public async Task ChangeUserPassword_Fail_Himself_WrongOldPassword()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "3b64bdba-5d18-47ef-9f15-755654a492a4";
@@ -240,7 +240,7 @@ namespace MadPay724.Test.ControllersTests
 
         }
         [Fact]
-        public async Task ChangeUserPassword_ModelStateError()
+        public async Task ChangeUserPassword_Fail_ModelStateError()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";

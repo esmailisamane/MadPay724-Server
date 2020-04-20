@@ -34,7 +34,7 @@ namespace MadPay724.Test.ControllersTests
 
         #region GetPhotoTests
         [Fact]
-        public async Task GetPhoto_Can_Himself()
+        public async Task GetPhoto_Success_Himself()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
@@ -53,7 +53,7 @@ namespace MadPay724.Test.ControllersTests
 
         }
         [Fact]
-        public async Task GetPhoto_Cant_AnOtherUser()
+        public async Task GetPhoto_Fail_AnOtherUser()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74e";
@@ -75,7 +75,7 @@ namespace MadPay724.Test.ControllersTests
 
         #region ChangeUserPhotoTests
         [Fact]
-        public async Task ChangeUserPhoto_Can_Himself()
+        public async Task ChangeUserPhoto_Success_Himself()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
@@ -136,7 +136,7 @@ namespace MadPay724.Test.ControllersTests
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
         [Fact]
-        public async Task ChangeUserPhoto_Cant_WorngFile()
+        public async Task ChangeUserPhoto_Fail_WorngFile()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
@@ -174,7 +174,7 @@ namespace MadPay724.Test.ControllersTests
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
-        public async Task ChangeUserPhoto_Cant_AnOtherUser()
+        public async Task ChangeUserPhoto_Fail_AnOtherUser()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
