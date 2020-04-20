@@ -25,7 +25,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         private readonly Mock<IUnitOfWork<MadpayDbContext>> _mockRepo;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<IUserService> _mockUserService;
-        private readonly Mock<IUtilities> _mockUtilities;
+        //private readonly Mock<IUtilities> _mockUtilities;
         private readonly Mock<ILogger<UsersController>> _mockLogger;
         private readonly UsersController _controller;
 
@@ -33,7 +33,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         {
             _mockRepo = new Mock<IUnitOfWork<MadpayDbContext>>();
             _mockMapper = new Mock<IMapper>();
-            _mockUtilities = new Mock<IUtilities>();
+            //_mockUtilities = new Mock<IUtilities>();
             _mockUserService = new Mock<IUserService>();
             _mockLogger = new Mock<ILogger<UsersController>>();
             _controller = new UsersController(_mockRepo.Object, _mockMapper.Object, _mockUserService.Object, _mockLogger.Object);
@@ -45,8 +45,8 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         public async Task GetUser_Success_GetUser()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var users = UsersControllerMockData.GetUser();
-            var userForDetailedDto = UsersControllerMockData.GetUserForDetailedDto();
+            var users = UnitTestsDataInput.Users;
+            var userForDetailedDto = UnitTestsDataInput.userForDetailedDto;
             _mockRepo.Setup(x => x.UserRepository
                 .GetManyAsync(
                     It.IsAny<Expression<Func<User, bool>>>(),
@@ -72,8 +72,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         public async Task UpdateUser_Success()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var users = UsersControllerMockData.GetUser();
-            //var userForDetailedDto = UsersControllerMockData.GetUserForDetailedDto();
+            var users = UnitTestsDataInput.Users;
             _mockRepo.Setup(x => x.UserRepository
                 .GetByIdAsync(
                     It.IsAny<string>())).ReturnsAsync(() => users.First());
@@ -99,8 +98,8 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         public async Task UpdateUser_Fail()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var users = UsersControllerMockData.GetUser();
-            //var userForDetailedDto = UsersControllerMockData.GetUserForDetailedDto();
+            var users = UnitTestsDataInput.Users;
+            //var userForDetailedDto = UnitTestsDataInput.userForDetailedDto;
             _mockRepo.Setup(x => x.UserRepository
                 .GetByIdAsync(
                     It.IsAny<string>())).ReturnsAsync(() => users.First());
@@ -120,9 +119,13 @@ namespace MadPay724.Test.UnitTests.ControllersTests
             var badResult = result as BadRequestObjectResult;
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             Assert.NotNull(badResult);
-            Assert.IsType<retutnMessage>(badResult.Value);
+            Assert.IsType<returnMessage>(badResult.Value);
             Assert.Equal(400, badResult.StatusCode);
-            _mockRepo.Verify(x => x.UserRepository.Update(It.IsAny<User>()),Times.Once);
+
+            _mockRepo.Verify(x => x.UserRepository
+                .Update(
+                    It.IsAny<User>()), Times.Once);
+
         }
         [Fact]
         public async Task UpdateUser_Fail_ModelStateError()
@@ -141,7 +144,6 @@ namespace MadPay724.Test.UnitTests.ControllersTests
             Assert.Equal(4, modelState.Keys.Count());
             Assert.True(modelState.Keys.Contains("Name") && modelState.Keys.Contains("PhoneNumber")
                                                          && modelState.Keys.Contains("Address") && modelState.Keys.Contains("City"));
-
         }
         #endregion
 
@@ -149,10 +151,10 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         [Fact]
         public async Task ChangeUserPassword_Success()
         {
-            // //Arrange------------------------------------------------------------------------------------------------------------------------------
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
 
             _mockUserService.Setup(x => x.GetUserForPassChange(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(UsersControllerMockData.GetUser().First());
+                .ReturnsAsync(UnitTestsDataInput.Users.First());
 
             _mockUserService.Setup(x => x.UpdateUserPass(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -174,22 +176,30 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
 
+            _mockUserService.Setup(x => x.GetUserForPassChange(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(It.IsAny<User>());
 
-            //Act----------------------------------------------------------------------------------------------------------------------------------
 
+            var result = await _controller.ChangeUserPassword(It.IsAny<string>(), UnitTestsDataInput.passwordForChangeDto_Success);
+            var badResult = result as BadRequestObjectResult;
             //Assert-------------------------------------------------------------------------------------------------------------------------------
-
+            Assert.NotNull(badResult);
+            Assert.IsType<returnMessage>(badResult.Value);
+            Assert.Equal(400, badResult.StatusCode);
         }
         [Fact]
         public async Task ChangeUserPassword_Fail_ModelStateError()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-
+            var controller = new ModelStateControllerTests();
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
-
+            controller.ValidateModelState(UnitTestsDataInput.passwordForChangeDto_Fail_ModelState);
+            var modelState = controller.ModelState;
             //Assert-------------------------------------------------------------------------------------------------------------------------------
-
+            Assert.False(modelState.IsValid);
+            Assert.Equal(2, modelState.Keys.Count());
+            Assert.True(modelState.Keys.Contains("OldPassword") && modelState.Keys.Contains("NewPassword"));
 
         }
         #endregion

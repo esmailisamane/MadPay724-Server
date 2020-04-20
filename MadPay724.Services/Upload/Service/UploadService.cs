@@ -34,7 +34,7 @@ namespace MadPay724.Services.Upload.Service
             _cloudinary = new Cloudinary(acc);
 
         }
-        public async Task<FileUploadedDto> UploadProfilePic(IFormFile file, string userId, string userName, string WebRootPath, string UrlBegan)
+        public async Task<FileUploadedDto> UploadProfilePic(IFormFile file, string userId, string WebRootPath, string UrlBegan)
         {
            
             if (_setting.UploadLocal)
@@ -43,7 +43,7 @@ namespace MadPay724.Services.Upload.Service
             }
             else
             {
-                return UploadProfilePicToCloudinary(file, userName);
+                return UploadProfilePicToCloudinary(file, userId);
             }
         }
 

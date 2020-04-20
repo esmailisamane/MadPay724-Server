@@ -42,48 +42,59 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         }
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register (UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
             if (await _db.UserRepository.UserExists(userForRegisterDto.UserName))
             {
-                _logger.LogWarning($"{userForRegisterDto.UserName}میخواهد دوباره ثبت نام کند. ");
-                return BadRequest(new retutnMessage()
+                _logger.LogWarning($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} میحواهد دوباره ثبت نام کند");
+                return BadRequest(new returnMessage()
                 {
                     status = false,
                     title = "خطا",
-                    message ="نام کاربری وجود دارد",
-                   
-
+                    message = "نام کاربری وجود دارد"
                 });
             }
-               
+
+
             var userToCreate = new User
             {
                 UserName = userForRegisterDto.UserName,
-                Name= userForRegisterDto.Name,
+                Name = userForRegisterDto.Name,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
                 Address = "",
                 City = "",
-                DateOfBirth = DateTime.Now,
                 Gender = true,
+                DateOfBirth = DateTime.Now,
                 IsActive = true,
-                Status = true,
+                Status = true
             };
+            // var uri = Server.MapPath("~/Files/Pic/profilepic.png");
 
             var photoToCreate = new Photo
             {
-               UserId = userToCreate.Id,
-               Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, Request.PathBase.Value, "wwwroot/Files/Pic/profilepic.png"),
-               Description="Profile Pic",
-               Alt= "Profile Pic",
-               IsMain= true,
-               PublicId="0",
+                UserId = userToCreate.Id,
+                Url = string.Format("{0}://{1}{2}/{3}",
+                    Request.Scheme,
+                    Request.Host.Value ?? "",
+                    Request.PathBase.Value ?? "",
+                    "wwwroot/Files/Pic/profilepic.png"), //"https://res.cloudinary.com/keyone2693/image/upload/v1561717720/768px-Circle-icons-profile.svg.png",
+                Description = "Profile Pic",
+                Alt = "Profile Pic",
+                IsMain = true,
+                PublicId = "0"
             };
 
             var createdUser = await _authService.Register(userToCreate, photoToCreate, userForRegisterDto.Password);
-            _logger.LogInformation($"{userForRegisterDto.UserName} ثبت نام کرده است ");
-            return StatusCode(201);
+            var userForReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            _logger.LogInformation($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} ثبت نام کرده است");
+
+            return CreatedAtRoute("GetUser", new
+            {
+                controller = "Users",
+                id = createdUser.Id
+            }, userForReturn);
         }
 
         [AllowAnonymous]

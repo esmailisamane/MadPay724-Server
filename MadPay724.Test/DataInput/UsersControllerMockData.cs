@@ -21,7 +21,7 @@ namespace MadPay724.Test.DataInput
                     LastActive = DateTime.Now,
                     PasswordHash =new byte[255],
                     PasswordSalt = new byte[255],
-                    UserName = "se@gmail.com",
+                    UserName = "haysmathis@barkarama.com",
                     Name = "Holloway Vasquez",
                     PhoneNumber = "55",
                     Address = "55",

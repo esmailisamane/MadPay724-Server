@@ -116,23 +116,11 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
-            var controller = new ModelStateControllerTests();
-
-
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
 
-            controller.ValidateModelState(request.Body);
-            var modelState = controller.ModelState;
-
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-
-            Assert.False(modelState.IsValid);
-            Assert.Equal(4, modelState.Keys.Count());
-            Assert.True(modelState.Keys.Contains("Name") && modelState.Keys.Contains("PhoneNumber")
-                && modelState.Keys.Contains("Address") && modelState.Keys.Contains("City"));
-
         }
         #endregion
 
@@ -192,12 +180,12 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
             var value = await response.Content.ReadAsStringAsync();
-            var valueObj = JsonConvert.DeserializeObject<retutnMessage>(value);
+            var valueObj = JsonConvert.DeserializeObject<returnMessage>(value);
 
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.False(valueObj.status);
-            Assert.Equal("پسورد قبلی اشتباه میباشد", valueObj.message);
+            Assert.Equal("پسورد قبلی اشتباه می باشد", valueObj.message);
 
 
         }
@@ -214,21 +202,18 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
-            var controller = new ModelStateControllerTests();
+
 
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
 
-            controller.ValidateModelState(request.Body);
-            var modelState = controller.ModelState;
+
 
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-            Assert.False(modelState.IsValid);
-            Assert.Equal(2, modelState.Keys.Count());
-            Assert.True(modelState.Keys.Contains("OldPassword") && modelState.Keys.Contains("NewPassword"));
+
 
         }
         #endregion

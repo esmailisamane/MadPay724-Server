@@ -24,19 +24,14 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         private readonly IMapper _mapper;
         private readonly IUploadService _uploadService;
         private readonly IWebHostEnvironment _env;
-       
 
-
-        public PhotosController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IUploadService uploadService, IWebHostEnvironment env)
+        public PhotosController(IUnitOfWork<MadpayDbContext> dbContext, IMapper mapper, IUploadService uploadService,
+             IWebHostEnvironment env)
         {
             _env = env;
             _db = dbContext;
             _mapper = mapper;
             _uploadService = uploadService;
-          
-
-
-
         }
         [ServiceFilter(typeof(UserCkeckIdFilter))]
         [HttpGet("{id}", Name = "GetPhoto")]
@@ -45,19 +40,14 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             var photoFromRepo = await _db.PhotoRepository.GetByIdAsync(id);
 
             var photo = _mapper.Map<PhotoForReturnProfileDto>(photoFromRepo);
+
             return Ok(photo);
         }
-
 
         [ServiceFilter(typeof(UserCkeckIdFilter))]
         [HttpPost]
         public async Task<IActionResult> ChangeUserPhoto(string userId, [FromForm]PhotoForProfileDto photoForProfileDto)
         {
-            if (userId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
-            {
-                return Unauthorized("شما اجازه تغییر تصویر این کاربر را ندارید");
-            }
-
             //var userFromRepo = await _db.UserRepository.GetByIdAsync(userId);
 
             // var uplaodRes = _uploadService.UploadToCloudinary(photoForProfileDto.File);
@@ -65,21 +55,18 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             var uplaodRes = await _uploadService.UploadProfilePic(
                 photoForProfileDto.File,
                 userId,
-                User.FindFirst(ClaimTypes.Name).Value,
                 _env.WebRootPath,
-                string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.Value, Request.PathBase.Value)
+                string.Format("{0}://{1}{2}", Request.Scheme ?? "", Request.Host.Value ?? "", Request.PathBase.Value ?? "")
                 );
 
             if (uplaodRes.Status)
             {
                 photoForProfileDto.Url = uplaodRes.Url;
                 if (uplaodRes.LocalUploaded)
-                    photoForProfileDto.PublicId ="1";
-                
+                    photoForProfileDto.PublicId = "1";
                 else
                     photoForProfileDto.PublicId = uplaodRes.PublicId;
-                
-                
+
 
 
                 var oldphoto = await _db.PhotoRepository.GetAsync(p => p.UserId == userId && p.IsMain);
@@ -97,7 +84,6 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
                 {
                     _uploadService.RemoveFileFromLocal(oldphoto.Url.Split('/').Last(), _env.WebRootPath, "Files\\Pic\\Profile");
                 }
-
 
                 _mapper.Map(photoForProfileDto, oldphoto);
 
@@ -118,6 +104,9 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
                 return BadRequest(uplaodRes.Message);
             }
         }
+
+
+
 
     }
 }

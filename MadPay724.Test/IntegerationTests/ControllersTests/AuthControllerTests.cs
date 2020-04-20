@@ -49,7 +49,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Assert-------------------------------------------------------------------------------------------------------------------------------
 
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-            Assert.Equal("کاربری با این یوزر و پس وجود ندارد", actual);
+            Assert.Equal("کاربری با این یوزر و پسورد وجود ندارد", actual);
         }
         [Fact]
         public async Task Login_Fail_ModelStateError()
@@ -60,20 +60,17 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
                 Url = "/site/admin/auth/login",
                 Body = UnitTestsDataInput.useForLoginDto_Fail_ModelState
             };
-            var controller = new ModelStateControllerTests();
+
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
 
-            controller.ValidateModelState(request.Body);
-            var modelState = controller.ModelState;
+
             //Assert-------------------------------------------------------------------------------------------------------------------------------
 
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-            Assert.False(modelState.IsValid);
-            Assert.Equal(2, modelState.Keys.Count());
-            Assert.True(modelState.Keys.Contains("UserName") && modelState.Keys.Contains("Password"));
+
 
             //Assert
 
@@ -101,7 +98,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             var request = "/site/admin/auth/register";
             var model = UnitTestsDataInput.userForRegisterDto_Fail_Exist;
-            var expected = new retutnMessage()
+            var expected = new returnMessage()
             {
                 status = false,
                 title = "خطا",
@@ -109,12 +106,12 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             };
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request, ContentHelper.GetStringContent(model));
-            var actual = await response.Content.ReadAsAsync<retutnMessage>();
+            var actual = await response.Content.ReadAsAsync<returnMessage>();
             //Assert-------------------------------------------------------------------------------------------------------------------------------
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-            Assert.IsType<retutnMessage>(actual);
+            Assert.IsType<returnMessage>(actual);
 
             Assert.False(expected.status);
             Assert.Equal(expected.title, actual.title);
@@ -131,21 +128,17 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
                 Url = "/site/admin/auth/register",
                 Body = UnitTestsDataInput.userForRegisterDto_Fail_ModelState
             };
-            var controller = new ModelStateControllerTests();
+
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
 
-            controller.ValidateModelState(request.Body);
-            var modelState = controller.ModelState;
+
             //Assert-------------------------------------------------------------------------------------------------------------------------------
 
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-            Assert.False(modelState.IsValid);
-            Assert.Equal(4, modelState.Keys.Count());
-            Assert.True(modelState.Keys.Contains("UserName") && modelState.Keys.Contains("Password")
-                        && modelState.Keys.Contains("Name") && modelState.Keys.Contains("PhoneNumber"));
+
 
             //Assert
 
