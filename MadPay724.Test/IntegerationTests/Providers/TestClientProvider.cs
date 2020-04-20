@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 
-namespace MadPay724.Test.Providers
+namespace MadPay724.Test.IntegerationTests.Providers
 {
     public class TestClientProvider<TStartup> : IDisposable
     {

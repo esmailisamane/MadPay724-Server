@@ -1,6 +1,6 @@
 ﻿using MadPay724.Data.Dtos.Site.Admin.Photos;
 using MadPay724.Presentation;
-using MadPay724.Test.Providers;
+using MadPay724.Test.IntegerationTests.Providers;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MadPay724.Test.ControllersTests
+namespace MadPay724.Test.IntegerationTests.ControllersTests
 {
     public class PhotosControllerTests : IClassFixture<TestClientProvider<Startup>>
     {
