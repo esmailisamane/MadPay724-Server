@@ -74,7 +74,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             else
             {
                 _logger.LogError($"آپدیت نشد {userForUpdateDto.Name}");
-                return BadRequest(new returnMessage()
+                return BadRequest(new retutnMessage()
                 {
                     status = false,
                     title = "خطا",
@@ -91,7 +91,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         {
             var userFromRepo = await _userService.GetUserForPassChange(id, passwordForChangeDto.OldPassword);
             if(userFromRepo == null)
-                return BadRequest(new returnMessage()
+                return BadRequest(new retutnMessage()
                 {
                     status = false,
                     title = "خطا",
@@ -105,7 +105,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             }
             else
             {
-                return BadRequest(new returnMessage()
+                return BadRequest(new retutnMessage()
                 {
                     status = false,
                     title = "خطا",

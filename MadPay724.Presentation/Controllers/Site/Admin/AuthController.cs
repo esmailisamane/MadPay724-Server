@@ -48,7 +48,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             if (await _db.UserRepository.UserExists(userForRegisterDto.UserName))
             {
                 _logger.LogWarning($"{userForRegisterDto.UserName}میخواهد دوباره ثبت نام کند. ");
-                return BadRequest(new returnMessage()
+                return BadRequest(new retutnMessage()
                 {
                     status = false,
                     title = "خطا",

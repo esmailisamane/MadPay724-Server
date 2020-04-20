@@ -1,53 +1,52 @@
-﻿using AutoMapper;
+﻿using System; 
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using AutoMapper;
+using MadPay724.Common.ErrorAndMesseage;
+using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Data.Models;
 using MadPay724.Presentation.Controllers.Site.Admin;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
-using MadPay724.Test.UnitTests.Mock.Data;
+using MadPay724.Test.DataInput;
+using MadPay724.Test.IntegerationTests.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MadPay724.Test.UnitTests.ControllersTests
 {
-  public class UsersControllerUnitTests
-    
-  {
-
-    private readonly Mock<IUnitOfWork<MadpayDbContext>> _mockRepo;
-    private readonly Mock<IMapper> _mockMapper;
-    private readonly Mock<IUserService> _mockUserService;
-    private readonly Mock<ILogger<UsersController>> _mockLogger;
-    private readonly UsersController _controller;
+    public class UsersControllerUnitTests
+    {
+        private readonly Mock<IUnitOfWork<MadpayDbContext>> _mockRepo;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IUtilities> _mockUtilities;
+        private readonly Mock<ILogger<UsersController>> _mockLogger;
+        private readonly UsersController _controller;
 
         public UsersControllerUnitTests()
         {
             _mockRepo = new Mock<IUnitOfWork<MadpayDbContext>>();
             _mockMapper = new Mock<IMapper>();
+            _mockUtilities = new Mock<IUtilities>();
             _mockUserService = new Mock<IUserService>();
             _mockLogger = new Mock<ILogger<UsersController>>();
             _controller = new UsersController(_mockRepo.Object, _mockMapper.Object, _mockUserService.Object, _mockLogger.Object);
-            //0d47394e-672f-4db7-898c-bfd8f32e2af7
-            //haysmathis@barkarama.com
-            //123789
+
         }
 
-    #region GetUserTests
-    [Fact]
-    public async Task GetUser_Success_GetUserHimself()
-    {
+        #region GetUserTests
+        [Fact]
+        public async Task GetUser_Success_GetUser()
+        {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var users = UsersControllerData.GetUser();
-            var userForDetailedDto = UsersControllerData.GetUserForDetailedDto();
+            var users = UsersControllerMockData.GetUser();
+            var userForDetailedDto = UsersControllerMockData.GetUserForDetailedDto();
             _mockRepo.Setup(x => x.UserRepository
                 .GetManyAsync(
                     It.IsAny<Expression<Func<User, bool>>>(),
@@ -65,103 +64,134 @@ namespace MadPay724.Test.UnitTests.ControllersTests
             Assert.IsType<UserForDetailedDto>(okResult.Value);
             Assert.Equal(200, okResult.StatusCode);
         }
-    [Fact]
-    public async Task GetUser_Fail_GetAnOtherUser()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
+
+        #endregion
+
+        #region UpdateUserTests
+        [Fact]
+        public async Task UpdateUser_Success()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+            var users = UsersControllerMockData.GetUser();
+            //var userForDetailedDto = UsersControllerMockData.GetUserForDetailedDto();
+            _mockRepo.Setup(x => x.UserRepository
+                .GetByIdAsync(
+                    It.IsAny<string>())).ReturnsAsync(() => users.First());
+
+            _mockRepo.Setup(x => x.UserRepository
+                .Update(
+                    It.IsAny<User>()));
+
+            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(true);
+            //
+            _mockMapper.Setup(x => x.Map(It.IsAny<UserForUpdateDto>(), It.IsAny<User>()))
+                .Returns(users.First());
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+
+            var result = await _controller.UpdateUser(It.IsAny<string>(), It.IsAny<UserForUpdateDto>());
+            var okResult = result as NoContentResult;
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.NotNull(okResult);
+            Assert.Equal(204, okResult.StatusCode);
+        }
+        [Fact]
+        public async Task UpdateUser_Fail()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+            var users = UsersControllerMockData.GetUser();
+            //var userForDetailedDto = UsersControllerMockData.GetUserForDetailedDto();
+            _mockRepo.Setup(x => x.UserRepository
+                .GetByIdAsync(
+                    It.IsAny<string>())).ReturnsAsync(() => users.First());
+
+            _mockRepo.Setup(x => x.UserRepository
+                .Update(
+                    It.IsAny<User>()));
+
+            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(false);
+            //
+            _mockMapper.Setup(x => x.Map(It.IsAny<UserForUpdateDto>(), It.IsAny<User>()))
+                .Returns(users.First());
+            //
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+            var result = await _controller.UpdateUser(It.IsAny<string>(), UnitTestsDataInput.userForUpdateDto_Fail);
+            var badResult = result as BadRequestObjectResult;
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.NotNull(badResult);
+            Assert.IsType<retutnMessage>(badResult.Value);
+            Assert.Equal(400, badResult.StatusCode);
+            _mockRepo.Verify(x => x.UserRepository.Update(It.IsAny<User>()),Times.Once);
+        }
+        [Fact]
+        public async Task UpdateUser_Fail_ModelStateError()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+
+            var controller = new ModelStateControllerTests();
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+
+            controller.ValidateModelState(UnitTestsDataInput.userForUpdateDto_Fail_ModelState);
+            var modelState = controller.ModelState;
+
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.False(modelState.IsValid);
+            Assert.Equal(4, modelState.Keys.Count());
+            Assert.True(modelState.Keys.Contains("Name") && modelState.Keys.Contains("PhoneNumber")
+                                                         && modelState.Keys.Contains("Address") && modelState.Keys.Contains("City"));
+
+        }
+        #endregion
+
+        #region ChangeUserPasswordTests
+        [Fact]
+        public async Task ChangeUserPassword_Success()
+        {
+            // //Arrange------------------------------------------------------------------------------------------------------------------------------
+
+            _mockUserService.Setup(x => x.GetUserForPassChange(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(UsersControllerMockData.GetUser().First());
+
+            _mockUserService.Setup(x => x.UpdateUserPass(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            //_mockUtilities.Setup(x => x.VerifyPasswordHash(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<byte[]>()))
+            //    .Returns(true);
+
+            //byte[] passwordHash, passwordSalt;
+            //_mockUtilities.Setup(x => x.CreatePasswordHash(It.IsAny<string>(),out passwordHash, out passwordSalt));
+
+            var result = await _controller.ChangeUserPassword(It.IsAny<string>(), UnitTestsDataInput.passwordForChangeDto_Success);
+            var okResult = result as NoContentResult;
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+            Assert.NotNull(okResult);
+            Assert.Equal(204, okResult.StatusCode);
+        }
+        [Fact]
+        public async Task ChangeUserPassword_Fail_WrongOldPassword()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
 
 
-        //Act----------------------------------------------------------------------------------------------------------------------------------
+            //Act----------------------------------------------------------------------------------------------------------------------------------
 
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
 
+        }
+        [Fact]
+        public async Task ChangeUserPassword_Fail_ModelStateError()
+        {
+            //Arrange------------------------------------------------------------------------------------------------------------------------------
+
+
+            //Act----------------------------------------------------------------------------------------------------------------------------------
+
+            //Assert-------------------------------------------------------------------------------------------------------------------------------
+
+
+        }
+        #endregion
     }
-
-    #endregion
-
-    #region UpdateUserTests
-    [Fact]
-    public async Task UpdateUser_Success_UpdateUserHimself()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-    }
-    [Fact]
-    public async Task UpdateUser_Fail_UpdateAnOtherUser()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-    }
-    [Fact]
-    public async Task UpdateUser_Fail_ModelStateError()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-
-    }
-    #endregion
-
-    #region ChangeUserPasswordTests
-    [Fact]
-    public async Task ChangeUserPassword_Success_Himself()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-    }
-    [Fact]
-    public async Task ChangeUserPassword_Fail_AnOtherUser()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-    }
-    [Fact]
-    public async Task ChangeUserPassword_Fail_Himself_WrongOldPassword()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-    }
-    [Fact]
-    public async Task ChangeUserPassword_Fail_ModelStateError()
-    {
-        //Arrange------------------------------------------------------------------------------------------------------------------------------
-
-
-        //Act----------------------------------------------------------------------------------------------------------------------------------
-
-        //Assert-------------------------------------------------------------------------------------------------------------------------------
-
-
-    }
-    #endregion
-}
 }

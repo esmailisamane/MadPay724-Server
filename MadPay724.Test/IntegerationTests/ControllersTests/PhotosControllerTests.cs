@@ -1,5 +1,6 @@
 ﻿using MadPay724.Data.Dtos.Site.Admin.Photos;
 using MadPay724.Presentation;
+using MadPay724.Test.DataInput;
 using MadPay724.Test.IntegerationTests.Providers;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -20,16 +21,9 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
     public class PhotosControllerTests : IClassFixture<TestClientProvider<Startup>>
     {
         private HttpClient _client;
-        private readonly string _UnToken;
-        private readonly string _AToken;
         public PhotosControllerTests(TestClientProvider<Startup> testClientProvider)
         {
             _client = testClientProvider.Client;
-            _UnToken = "";
-            //0d47394e-672f-4db7-898c-bfd8f32e2af7
-            //haysmathis@barkarama.com
-            //123789
-            _AToken = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5NTc4Zjc2Ni01ZDQ0LTRhYmUtYTU1Ni1iMWIyYzI1N2Y3NGEiLCJ1bmlxdWVfbmFtZSI6InNlQGdtYWlsLmNvbSIsIm5iZiI6MTU4NzI5OTgxMiwiZXhwIjoxNTg3Mzg2MjEyLCJpYXQiOjE1ODcyOTk4MTJ9.Ym9ch5yZzv0qIB2fQj8476Z6EeIN3udUgs1GVOjFuOMdSY_TcDq5Lo5ZxmTtzNrvZA59mXeIHQO0fG-Q6ey9aA";
         }
 
         #region GetPhotoTests
@@ -37,12 +31,13 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task GetPhoto_Success_Himself()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
-            string userPhotoId = "ba09fde5-3754-4e94-908e-7d1db6fb4aa3";
+            string userHimselfId = UnitTestsDataInput.userLogedInId;
+            string userPhotoId = UnitTestsDataInput.userLogedInPhotoId;
+
             var request = "/site/admin/users/" + userHimselfId + "/photos/" + userPhotoId;
 
             _client.DefaultRequestHeaders.Authorization
-           = new AuthenticationHeaderValue("Bearer", _AToken);
+           = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.GetAsync(request);
@@ -50,18 +45,18 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
         }
         [Fact]
         public async Task GetPhoto_Fail_AnOtherUser()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74e";
-            string userPhotoId = "ba09fde5-3754-4e94-908e-7d1db6fb4aa3";
+            string userHimselfId = UnitTestsDataInput.userAnOtherId;
+            string userPhotoId = UnitTestsDataInput.userLogedInPhotoId;
+
             var request = "/site/admin/users/" + userHimselfId + "/photos/" + userPhotoId;
 
             _client.DefaultRequestHeaders.Authorization
-           = new AuthenticationHeaderValue("Bearer", _AToken);
+           = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.GetAsync(request);
@@ -78,9 +73,11 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task ChangeUserPhoto_Success_Himself()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
             var fileMock = new Mock<IFormFile>();
-            var fileName = "9578f766-5d44-4abe-a556-b1b2c257f74a.jpg";
+            var fileName = "0d47394e-672f-4db7-898c-bfd8f32e2af7.jpg";
+
+            string userHimselfId = UnitTestsDataInput.userLogedInId;
+
 
             Bitmap image = new Bitmap(50, 50);
             Graphics imageData = Graphics.FromImage(image);
@@ -116,17 +113,13 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             var request = new
             {
                 Url = "/site/admin/users/" + userHimselfId + "/photos",
-                Body = new PhotoForProfileDto
-                {
-                    Url = "http://google.com",
-                    PublicId = "1"
-                }
+                Body = UnitTestsDataInput.photoForProfileDto
             };
 
             multiContent.Add(ContentHelper.GetStringContent(request.Body));
 
             _client.DefaultRequestHeaders.Authorization
-           = new AuthenticationHeaderValue("Bearer", _AToken);
+           = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request.Url, multiContent);
@@ -139,10 +132,10 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task ChangeUserPhoto_Fail_WorngFile()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            string userHimselfId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
+            string userHimselfId = UnitTestsDataInput.userLogedInId;
 
             IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("dummy image")),
-                0, 0, "Data", "3b64bdba-5d18-47ef-9f15-755654a492a4.png");
+                0, 0, "Data", "0d47394e-672f-4db7-898c-bfd8f32e2af7.png");
 
             byte[] data;
             using (var br = new BinaryReader(file.OpenReadStream()))
@@ -155,17 +148,13 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             var request = new
             {
                 Url = "/site/admin/users/" + userHimselfId + "/photos",
-                Body = new PhotoForProfileDto
-                {
-                    Url = "http://google.com",
-                    PublicId = "1"
-                }
+                Body = UnitTestsDataInput.photoForProfileDto
             };
 
             multiContent.Add(ContentHelper.GetStringContent(request.Body));
 
             _client.DefaultRequestHeaders.Authorization
-           = new AuthenticationHeaderValue("Bearer", _AToken);
+           = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request.Url, multiContent);
@@ -177,20 +166,15 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task ChangeUserPhoto_Fail_AnOtherUser()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            string anOtherUserId = "c5ba73d4-d9d8-4e2d-9fe3-b328b8f7f84b";
+            string anOtherUserId = UnitTestsDataInput.userAnOtherId;
+
             var request = new
             {
                 Url = "/site/admin/users/" + anOtherUserId + "/photos",
-                Body = new PhotoForProfileDto
-                {
-                    Url = "http://google.com",
-                    PublicId = "1"
-
-
-                }
+                Body = UnitTestsDataInput.photoForProfileDto
             };
             _client.DefaultRequestHeaders.Authorization
-           = new AuthenticationHeaderValue("Bearer", _AToken);
+           = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));

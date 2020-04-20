@@ -4,6 +4,8 @@ using System.Net;
 using System.Text;
 using AutoMapper;
 using MadPay724.Common.Helpers;
+using MadPay724.Common.Helpers.Helpers;
+using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Presentation.Helpers.Filters;
 using MadPay724.Repo.Infrastructure;
@@ -60,6 +62,7 @@ namespace MadPay724.Presentation
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUploadService, UploadService>();
+            services.AddScoped<IUtilities, Utilities>();
             services.AddScoped<UserCkeckIdFilter>();
 
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MadPay724.Common.Helpers;
+using MadPay724.Common.Helpers.Helpers;
 using MadPay724.Data.Dtos.Site.Admin.BankCards;
 using MadPay724.Data.Dtos.Site.Admin.Photos;
 using MadPay724.Data.Dtos.Site.Admin.Users;

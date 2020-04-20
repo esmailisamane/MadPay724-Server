@@ -1,4 +1,5 @@
 ﻿using MadPay724.Common.Helpers;
+using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Models;
 using MadPay724.Repo.Infrastructure;
@@ -16,9 +17,11 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
  public   class AuthService :IAuthService
     {
         private readonly IUnitOfWork<MadpayDbContext> _db;
-        public AuthService(IUnitOfWork<MadpayDbContext> dbContex)
+        private readonly IUtilities _utilities;
+        public AuthService(IUnitOfWork<MadpayDbContext> dbContex, IUtilities utilities)
         {
             _db = dbContex;
+            _utilities = utilities;
         }
         public async Task<User> Login(string username, string password)
         {
@@ -29,7 +32,7 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
                 return null;
             }
 
-            if (!Utilities.VerifypasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (!_utilities.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
             return user;
@@ -41,7 +44,7 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
         public async Task<User> Register(User user, Photo photo, string password)
         {
             byte[] passwordHash, passwordSalt;
-            Utilities.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            _utilities.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;

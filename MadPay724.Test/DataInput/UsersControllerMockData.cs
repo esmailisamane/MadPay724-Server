@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MadPay724.Test.UnitTests.Mock.Data
+namespace MadPay724.Test.DataInput
 {
-    public static class UsersControllerData
+    public static class UsersControllerMockData
     {
         public static IEnumerable<User> GetUser()
         {

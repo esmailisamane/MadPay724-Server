@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MadPay724.Common.ErrorAndMesseage
 {
-  public  class returnMessage
+  public  class retutnMessage
     {
         public bool status { get; set; }
         public string code { get; set; }
