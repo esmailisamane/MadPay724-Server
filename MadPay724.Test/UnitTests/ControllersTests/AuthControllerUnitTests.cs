@@ -60,7 +60,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
             _mockMapper.Setup(x => x.Map<UserForDetailedDto>(It.IsAny<User>()))
                 .Returns(UnitTestsDataInput.userForDetailedDto);
             //Act----------------------------------------------------------------------------------------------------------------------------------
-            var result = await _controller.login(UnitTestsDataInput.useForLoginDto_Success);
+            var result = await _controller.Login(UnitTestsDataInput.useForLoginDto_Success);
             var okResult = result as OkObjectResult;
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             Assert.NotNull(okResult);
@@ -76,7 +76,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
             string expected = "کاربری با این یوزر و پسورد وجود ندارد";
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
-            var result = await _controller.login(UnitTestsDataInput.useForLoginDto_Success);
+            var result = await _controller.Login(UnitTestsDataInput.useForLoginDto_Success);
             var okResult = result as UnauthorizedObjectResult;
             //Assert-------------------------------------------------------------------------------------------------------------------------------
             Assert.NotNull(okResult);

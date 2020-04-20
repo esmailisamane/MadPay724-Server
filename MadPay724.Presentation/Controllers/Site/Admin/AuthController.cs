@@ -21,8 +21,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace MadPay724.Presentation.Controllers.Site.Admin
-{   [Authorize]
-    [ApiExplorerSettings(GroupName ="Site")]
+{
+    [Authorize]
+    [ApiExplorerSettings(GroupName = "Site")]
     [Route("site/admin/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -32,14 +33,18 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
-        public AuthController(IUnitOfWork<MadpayDbContext> dbContex, IAuthService authService,IConfiguration config, IMapper mapper, ILogger<AuthController> logger)
+
+        public AuthController(IUnitOfWork<MadpayDbContext> dbContext, IAuthService authService,
+            IConfiguration config, IMapper mapper, ILogger<AuthController> logger)
         {
-            _db = dbContex;
+            _db = dbContext;
             _authService = authService;
             _config = config;
             _mapper = mapper;
             _logger = logger;
+
         }
+
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
@@ -86,68 +91,74 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
             };
 
             var createdUser = await _authService.Register(userToCreate, photoToCreate, userForRegisterDto.Password);
-            var userForReturn = _mapper.Map<UserForDetailedDto>(createdUser);
-
-            _logger.LogInformation($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} ثبت نام کرده است");
-
-            return CreatedAtRoute("GetUser", new
+            if (createdUser != null)
             {
-                controller = "Users",
-                id = createdUser.Id
-            }, userForReturn);
-        }
+                var userForReturn = _mapper.Map<UserForDetailedDto>(createdUser);
 
+                _logger.LogInformation($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} ثبت نام کرده است");
+
+                return CreatedAtRoute("GetUser", new
+                {
+                    controller = "Users",
+                    id = createdUser.Id
+                }, userForReturn);
+            }
+            else
+            {
+                _logger.LogWarning($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} میحواهد دوباره ثبت نام کند");
+                return BadRequest(new returnMessage()
+                {
+                    status = false,
+                    title = "خطا",
+                    message = "ثبت در دیتابیس"
+                });
+            }
+
+        }
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> login(UserForLoginDto userForLoginDto)
-        {   
-            
-            var userFromRepo = await _authService.Login(userForLoginDto.UserName, userForLoginDto.Password);
+        public async Task<IActionResult> Login(UserForLoginDto useForLoginDto)
+        {
+            var userFromRepo = await _authService.Login(useForLoginDto.UserName, useForLoginDto.Password);
+
             if (userFromRepo == null)
             {
-                _logger.LogWarning($"{userForLoginDto.UserName} درخواست لاگین ناموفق داشته است");
-                return Unauthorized("کاربری با این یوزر و پسورد وجود ندارد");
+                _logger.LogWarning($"{useForLoginDto.UserName} درخواست لاگین ناموفق داشته است");
+                return Unauthorized("کاربری با این یوزر و پس وجود ندارد");
+
             }
-              
-                //return Unauthorized(new returnMessage()
-                //{
-                //    status = false,
-                //    title = "خطا",
-                //    message = "کاربری با این یوزر و پسورد وجود ندارد",
 
-
-                //});
-            var clamis = new[]
+            var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
                 new Claim(ClaimTypes.Name,userFromRepo.UserName)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
             var tokenDes = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(clamis),
-                Expires = userForLoginDto.IsRemember ? DateTime.Now.AddDays(1): DateTime.Now.AddHours(2),
-                SigningCredentials = creds,
+                Subject = new ClaimsIdentity(claims),
+                Expires = useForLoginDto.IsRemember ? DateTime.Now.AddDays(1) : DateTime.Now.AddHours(2),
+                SigningCredentials = creds
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDes);
 
+
             var user = _mapper.Map<UserForDetailedDto>(userFromRepo);
 
-            _logger.LogInformation($"{userForLoginDto.UserName}لاگین کرده است ");
+            _logger.LogInformation($"{useForLoginDto.UserName} لاگین کرده است");
             return Ok(new
             {
                 token = tokenHandler.WriteToken(token),
                 user
             });
-            
-        }
 
-       
+        }
     }
 }

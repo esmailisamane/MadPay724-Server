@@ -12,22 +12,24 @@ using System.Threading.Tasks;
 
 namespace MadPay724.Services.Site.Admin.Auth.Service
 {
-  
 
- public   class AuthService :IAuthService
+    public class AuthService : IAuthService
     {
         private readonly IUnitOfWork<MadpayDbContext> _db;
         private readonly IUtilities _utilities;
-        public AuthService(IUnitOfWork<MadpayDbContext> dbContex, IUtilities utilities)
+
+        public AuthService(IUnitOfWork<MadpayDbContext> dbContext, IUtilities utilities)
         {
-            _db = dbContex;
+            _db = dbContext;
             _utilities = utilities;
         }
-        public async Task<User> Login(string username, string password)
+
+        public async Task<Data.Models.User> Login(string username, string password)
         {
             var users = await _db.UserRepository.GetManyAsync(p => p.UserName == username, null, "Photos");
             var user = users.SingleOrDefault();
-            if(user == null)
+
+            if (user == null)
             {
                 return null;
             }
@@ -35,27 +37,32 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
             if (!_utilities.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
-            return user;
 
+            return user;
         }
 
-       
-
-        public async Task<User> Register(User user, Photo photo, string password)
+        public async Task<Data.Models.User> Register(Data.Models.User user, Photo photo, string password)
         {
             byte[] passwordHash, passwordSalt;
             _utilities.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+
             await _db.UserRepository.InsertAsync(user);
             await _db.PhotoRepository.InsertAsync(photo);
-            await _db.saveAsync();
-
-            return user;
+            if (await _db.saveAsync())
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
-      
+
+
     }
 }
