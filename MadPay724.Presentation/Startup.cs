@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -41,15 +41,33 @@ namespace MadPay724.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(opt => opt.EnableEndpointRouting = false)
+           
+                 services.AddMvc(config =>
+                 {
+                     config.EnableEndpointRouting = false;
+                     config.ReturnHttpNotAcceptable = true;
+                     //config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                     //config.InputFormatters.Add(new XmlSerializerInputFormatter(config));
+                 })
+
                  .AddNewtonsoftJson(opt =>
                  {
                      opt.SerializerSettings.ReferenceLoopHandling =
                      Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                  });
 
-
-
+            //services.AddRouting(opt => opt.LowercaseUrls = true);
+           
+            // برای ورژنینگ استفاده  میشه
+            //services.AddRouting( opt => opt.LowercaseUrls = true);
+            //services.AddApiVersioning(opt =>
+            //{
+            //    opt.ApiVersionReader = new MediaTypeApiVersionReader();
+            //    opt.AssumeDefaultVersionWhenUnspecified = true;
+            //    opt.ReportApiVersions = true;
+            //    opt.DefaultApiVersion = new ApiVersion(1,0);
+            //    opt.ApiVersionSelector = new CurrentImplementationApiVersionSelector(opt);
+            //});
 
             services.AddCors();
 
@@ -81,10 +99,10 @@ namespace MadPay724.Presentation
             services.AddOpenApiDocument(document =>
             {
                 document.DocumentName = "Site";
-                document.ApiGroupNames = new[] { "Site" };
+                document.ApiGroupNames = new[] { "Site","Users" };
                 document.PostProcess = d =>
                 {
-                    d.Info.Title = "Site Controller";
+                    d.Info.Title = "NanoBeton";
                     //d.Info.Contact = new NSwag.OpenApiContact
                     //{
                     //    Name = "Samane",

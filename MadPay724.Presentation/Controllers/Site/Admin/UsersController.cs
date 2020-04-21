@@ -19,6 +19,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 {
     [Authorize]
     //[ServiceFilter(typeof(LogFilter))]
+   // [ApiVersion("1")]
     [ApiExplorerSettings(GroupName = "Site")]
     [Route("site/admin/[controller]")]
     [ApiController]
