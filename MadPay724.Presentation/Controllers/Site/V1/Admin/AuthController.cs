@@ -11,6 +11,7 @@ using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin;
 using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Data.Models;
+using MadPay724.Presentation.Routes.V1;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -20,11 +21,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MadPay724.Presentation.Controllers.Site.Admin
+namespace MadPay724.Presentation.Controllers.V1.Site.Admin
 {
     [Authorize]
-    [ApiExplorerSettings(GroupName = "Site")]
-    [Route("site/admin/[controller]")]
+    [ApiExplorerSettings(GroupName = "v1_Site_Admin")]
+    [Route("api/v1/site/admin/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -46,7 +47,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
         }
 
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost(ApiV1Routes.Auth.Register)]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
@@ -116,7 +117,7 @@ namespace MadPay724.Presentation.Controllers.Site.Admin
 
         }
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost(ApiV1Routes.Auth.Login)]
         public async Task<IActionResult> Login(UserForLoginDto useForLoginDto)
         {
             var userFromRepo = await _authService.Login(useForLoginDto.UserName, useForLoginDto.Password);

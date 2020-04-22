@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -20,6 +21,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -31,9 +33,19 @@ namespace MadPay724.Presentation
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly int? _httpsPort;
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            if (env.IsDevelopment())
+            {
+                var lunchJsonConf = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("Properties\\launchSettings.json")
+                    .Build();
+
+                _httpsPort = lunchJsonConf.GetValue<int>("iisSettings:iisExpress:sslPort");
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -46,8 +58,16 @@ namespace MadPay724.Presentation
                  {
                      config.EnableEndpointRouting = false;
                      config.ReturnHttpNotAcceptable = true;
-                     //config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-                     //config.InputFormatters.Add(new XmlSerializerInputFormatter(config));
+                     config.SslPort = _httpsPort;
+                     config.Filters.Add(typeof(RequireHttpsAttribute));
+                     config.Filters.Add(typeof(LinkRewritingFilter));
+
+                 //var jsonFormatter = config.OutputFormatters.OfType<JsonOutputFormatter>().Single();
+                 //config.OutputFormatters.Remove(jsonFormatter);
+                 //config.OutputFormatters.Add(new IonOutputFormatter(jsonFormatter));
+                 //config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                 //config.InputFormatters.Add(new XmlSerializerInputFormatter(config));
+               
                  })
 
                  .AddNewtonsoftJson(opt =>
@@ -56,8 +76,18 @@ namespace MadPay724.Presentation
                      Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                  });
 
+            services.AddResponseCaching();
+
+            services.AddHsts(opt =>
+                {
+                    opt.MaxAge = TimeSpan.FromDays(180);
+                    opt.IncludeSubDomains = true;
+                    opt.Preload = true;
+
+                });
+
             //services.AddRouting(opt => opt.LowercaseUrls = true);
-           
+
             // برای ورژنینگ استفاده  میشه
             //services.AddRouting( opt => opt.LowercaseUrls = true);
             //services.AddApiVersioning(opt =>
@@ -98,8 +128,8 @@ namespace MadPay724.Presentation
             //Swagger
             services.AddOpenApiDocument(document =>
             {
-                document.DocumentName = "Site";
-                document.ApiGroupNames = new[] { "Site","Users" };
+                document.DocumentName = "v1_Site_Admin";
+                document.ApiGroupNames = new[] { "v1_Site_Admin" };
                 document.PostProcess = d =>
                 {
                     d.Info.Title = "NanoBeton";
@@ -178,10 +208,12 @@ namespace MadPay724.Presentation
                         }
                     });
                 });
+               
             }
-
+            app.UseHsts();
             //seeder.SeedUsers();
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
+            app.UseResponseCaching();
             app.UseCors(p => p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             app.UseRouting();
             app.UseAuthentication();

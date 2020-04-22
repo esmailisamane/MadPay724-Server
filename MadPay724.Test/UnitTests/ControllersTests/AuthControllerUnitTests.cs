@@ -9,7 +9,7 @@ using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Data.Models;
-using MadPay724.Presentation.Controllers.Site.Admin;
+using MadPay724.Presentation.Controllers.V1.Site.Admin;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using MadPay724.Test.DataInput;
@@ -73,7 +73,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             _mockAuthService.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(It.IsAny<User>());
-            string expected = "کاربری با این یوزر و پسورد وجود ندارد";
+            string expected = "کاربری با این یوزر و پس وجود ندارد";
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var result = await _controller.Login(UnitTestsDataInput.useForLoginDto_Success);

@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Api\" />
-    <Folder Include="Controllers\Site\App\" />
+    <Folder Include="Controllers\Site\V1\App\" />
     <Folder Include="wwwroot\Files\Pic\Profile\" />
   </ItemGroup>
 

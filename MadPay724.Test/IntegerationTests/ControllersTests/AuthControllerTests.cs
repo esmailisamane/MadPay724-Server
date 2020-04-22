@@ -28,7 +28,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task Login_Success_UserLogin()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var request = "/site/admin/auth/login";
+            var request = UnitTestsDataInput.baseRouteV1 + UnitTestsDataInput.baseRouteV1 + "site/admin/auth/login";
             var model = UnitTestsDataInput.useForLoginDto_Success;
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request, ContentHelper.GetStringContent(model));
@@ -41,7 +41,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task Login_Fail_UserLogin()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var request = "/site/admin/auth/login";
+            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/auth/login";
             var model = UnitTestsDataInput.useForLoginDto_Fail;
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request, ContentHelper.GetStringContent(model));
@@ -49,7 +49,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Assert-------------------------------------------------------------------------------------------------------------------------------
 
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-            Assert.Equal("کاربری با این یوزر و پسورد وجود ندارد", actual);
+            Assert.Equal("کاربری با این یوزر و پس وجود ندارد", actual);
         }
         [Fact]
         public async Task Login_Fail_ModelStateError()
@@ -57,7 +57,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             var request = new
             {
-                Url = "/site/admin/auth/login",
+                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/auth/login",
                 Body = UnitTestsDataInput.useForLoginDto_Fail_ModelState
             };
 
@@ -83,7 +83,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task Register_Success_UserRegister()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var request = "/site/admin/auth/register";
+            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/auth/register";
             var model = UnitTestsDataInput.userForRegisterDto;
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var response = await _client.PostAsync(request, ContentHelper.GetStringContent(model));
@@ -96,7 +96,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         public async Task Register_Fail_UserExist()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            var request = "/site/admin/auth/register";
+            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/auth/register";
             var model = UnitTestsDataInput.userForRegisterDto_Fail_Exist;
             var expected = new returnMessage()
             {
@@ -125,7 +125,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             var request = new
             {
-                Url = "/site/admin/auth/register",
+                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/auth/register",
                 Body = UnitTestsDataInput.userForRegisterDto_Fail_ModelState
             };
 

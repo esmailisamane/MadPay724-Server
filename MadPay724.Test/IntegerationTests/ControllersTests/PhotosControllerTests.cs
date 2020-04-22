@@ -34,7 +34,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userLogedInId;
             string userPhotoId = UnitTestsDataInput.userLogedInPhotoId;
 
-            var request = "/site/admin/users/" + userHimselfId + "/photos/" + userPhotoId;
+            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/users/" + userHimselfId + "/photos/" + userPhotoId;
 
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
@@ -53,7 +53,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userAnOtherId;
             string userPhotoId = UnitTestsDataInput.userLogedInPhotoId;
 
-            var request = "/site/admin/users/" + userHimselfId + "/photos/" + userPhotoId;
+            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/users/" + userHimselfId + "/photos/" + userPhotoId;
 
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
@@ -112,7 +112,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
 
             var request = new
             {
-                Url = "/site/admin/users/" + userHimselfId + "/photos",
+                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/users/" + userHimselfId + "/photos",
                 Body = UnitTestsDataInput.photoForProfileDto
             };
 
@@ -147,7 +147,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
 
             var request = new
             {
-                Url = "/site/admin/users/" + userHimselfId + "/photos",
+                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/users/" + userHimselfId + "/photos",
                 Body = UnitTestsDataInput.photoForProfileDto
             };
 
@@ -170,7 +170,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
 
             var request = new
             {
-                Url = "/site/admin/users/" + anOtherUserId + "/photos",
+                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/users/" + anOtherUserId + "/photos",
                 Body = UnitTestsDataInput.photoForProfileDto
             };
             _client.DefaultRequestHeaders.Authorization

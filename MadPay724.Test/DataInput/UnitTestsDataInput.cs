@@ -11,15 +11,17 @@ namespace MadPay724.Test.DataInput
 {
     public static class UnitTestsDataInput
     {
+        public static readonly string baseRouteV1 = "api/v1/";
+
         public static readonly string unToken = "";
 
         public static readonly string aToken =
-            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5NTc4Zjc2Ni01ZDQ0LTRhYmUtYTU1Ni1iMWIyYzI1N2Y3NGEiLCJ1bmlxdWVfbmFtZSI6InNlQGdtYWlsLmNvbSIsIm5iZiI6MTU4NzI5OTgxMiwiZXhwIjoxNTg3Mzg2MjEyLCJpYXQiOjE1ODcyOTk4MTJ9.Ym9ch5yZzv0qIB2fQj8476Z6EeIN3udUgs1GVOjFuOMdSY_TcDq5Lo5ZxmTtzNrvZA59mXeIHQO0fG-Q6ey9aA";
+            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzYjY0YmRiYS01ZDE4LTQ3ZWYtOWYxNS03NTU2NTRhNDkyYTQiLCJ1bmlxdWVfbmFtZSI6InNAZ21haWwuY29tIiwibmJmIjoxNTg3NDgxNDU1LCJleHAiOjE1ODc1Njc4NTUsImlhdCI6MTU4NzQ4MTQ1NX0.ZgHRVGs3G56hSAHmMeJ0WpqbsaY3ga_c6DYPajgI2f9c0RjPbdDvRWqXo1FObdIFFHEM6Eoqe62VIXhHi2kczg";
 
 
 
-        public static readonly string userLogedInUsername = "se@gmail.com";
-        public static readonly string userLogedInPassword = "123456";
+        public static readonly string userLogedInUsername = "s@gmail.com";
+        public static readonly string userLogedInPassword = "12345";
         public static readonly string userLogedInId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
         public static readonly string userAnOtherId = "0d47394e-672f-4db7-898c-bfd8f32e2af7";
         public static readonly string userLogedInPhotoId = "ba09fde5-3754-4e94-908e-7d1db6fb4aa3";
@@ -86,7 +88,7 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForRegisterDto userForRegisterDto = new UserForRegisterDto()
         {
-            UserName = "g@gmail.com",
+            UserName = "gse@gmail.com",
             Password = "123789",
             Name = "soni",
             PhoneNumber = "0912552932"
@@ -110,8 +112,8 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForLoginDto useForLoginDto_Success = new UserForLoginDto()
         {
-            UserName = "se@gmail.com",
-            Password = "123456",
+            UserName = "s@gmail.com",
+            Password = "12345",
             IsRemember = true
         };
 
@@ -155,14 +157,14 @@ namespace MadPay724.Test.DataInput
 
         public static readonly PasswordForChangeDto passwordForChangeDto = new PasswordForChangeDto()
         {
-            OldPassword = "123456",
-            NewPassword = "123789"
+            OldPassword = "12345",
+            NewPassword = "12345"
         };
 
         public static readonly PasswordForChangeDto passwordForChangeDto_Fail = new PasswordForChangeDto()
         {
             OldPassword = "123789654645",
-            NewPassword = "123789"
+            NewPassword = "12345"
         };
 
         public static readonly PasswordForChangeDto passwordForChangeDto_Fail_ModelState = new PasswordForChangeDto()

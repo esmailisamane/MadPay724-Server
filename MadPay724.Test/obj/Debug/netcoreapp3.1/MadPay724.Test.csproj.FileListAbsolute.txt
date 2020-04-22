@@ -155,11 +155,9 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Razor.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Workspaces.dll
-C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.DotNet.InternalAbstractions.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
-C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll
@@ -251,3 +249,4 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Moq.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\obj\Debug\netcoreapp3.1\MadPay724.Test.csproj.CoreCompileInputs.cache
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
