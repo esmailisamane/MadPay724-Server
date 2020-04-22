@@ -125,6 +125,16 @@ namespace MadPay724.Presentation
                         ValidateAudience = false
                     };
                 });
+
+            //services.AddAuthentication("Bearer")
+            //    .AddIdentityServerAuthentication(opt =>
+            //    {
+            //        opt.Authority = "http://localhost:5000";
+            //        opt.RequireHttpsMetadata = false;
+            //        opt.ApiName = "MadPay724Api";
+            //    });
+                    
+
             //Swagger
             services.AddOpenApiDocument(document =>
             {

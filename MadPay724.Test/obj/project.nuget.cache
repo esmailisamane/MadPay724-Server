@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "riITnbukAUQ80XuGTCfjJmIYy6IIpKQdG+/3GjMylsEg0SZcs5k83U3iPeArmhMHOcFA3NAn6HxSMrrvLHjesA==",
+  "dgSpecHash": "hMTo0nnPNmlpcdOt9qzBSUrHA29tr+FtVJ04XZ7l5Ba/ejdoasgXO9kXsqgvJAIio9jCk3MFYE0YKPm/2Xpz6A==",
   "success": true,
   "projectFilePath": "C:\\Users\\admin\\source\\repos\\MadPay724-test\\MadPay724.Test\\MadPay724.Test.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,9 @@
     "C:\\Users\\admin\\.nuget\\packages\\castle.core\\4.4.0\\castle.core.4.4.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\cloudinarydotnet\\1.10.0\\cloudinarydotnet.1.10.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\coverlet.collector\\1.2.1\\coverlet.collector.1.2.1.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\identitymodel\\4.0.0\\identitymodel.4.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\identitymodel.aspnetcore.oauth2introspection\\4.0.1\\identitymodel.aspnetcore.oauth2introspection.4.0.1.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\identityserver4.accesstokenvalidation\\3.0.1\\identityserver4.accesstokenvalidation.3.0.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnet.mvc\\5.2.7\\microsoft.aspnet.mvc.5.2.7.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnet.razor\\3.2.7\\microsoft.aspnet.razor.3.2.7.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
