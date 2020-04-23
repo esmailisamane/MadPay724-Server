@@ -95,7 +95,7 @@ namespace MadPay724.Test.IntegerationTests.Providers
 
             // Add configuration for client
             Client = Server.CreateClient();
-            Client.BaseAddress = new Uri("http://localhost:5001");
+            Client.BaseAddress = new Uri("https://localhost:5001");
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }

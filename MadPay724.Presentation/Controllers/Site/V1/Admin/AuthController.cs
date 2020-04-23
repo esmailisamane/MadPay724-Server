@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MadPay724.Common.ErrorAndMesseage;
+using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
 using MadPay724.Data.Dtos.Site.Admin;
 using MadPay724.Data.Dtos.Site.Admin.Users;
@@ -16,16 +17,19 @@ using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace MadPay724.Presentation.Controllers.V1.Site.Admin
 {
-   
+
+    [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "v1_Site_Admin")]
-    [Route("api/v1/site/admin/[controller]")]
+    //[Route("api/v1/site/admin/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -34,19 +38,26 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
+        private readonly IUtilities _utilities;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
 
         public AuthController(IUnitOfWork<MadpayDbContext> dbContext, IAuthService authService,
-            IConfiguration config, IMapper mapper, ILogger<AuthController> logger)
+            IConfiguration config, IMapper mapper, ILogger<AuthController> logger, IUtilities utilities,
+            UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _db = dbContext;
             _authService = authService;
             _config = config;
             _mapper = mapper;
             _logger = logger;
-
+            _utilities = utilities;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        [AllowAnonymous]
+
         [HttpPost(ApiV1Routes.Auth.Register)]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
@@ -116,50 +127,37 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
             }
 
         }
-        [AllowAnonymous]
         [HttpPost(ApiV1Routes.Auth.Login)]
         public async Task<IActionResult> Login(UserForLoginDto useForLoginDto)
         {
-            var userFromRepo = await _authService.Login(useForLoginDto.UserName, useForLoginDto.Password);
+            var user = await _userManager.FindByNameAsync(useForLoginDto.UserName);
+            if (user == null)
+            {
+                _logger.LogWarning($"{useForLoginDto.UserName} درخواست لاگین ناموفق داشته است");
+                return Unauthorized("کاربری با این یوزر و پس وجود ندارد");
+            }
+            var result = await _signInManager.CheckPasswordSignInAsync(user, useForLoginDto.Password, false);
 
-            if (userFromRepo == null)
+            if (result.Succeeded)
+            {
+                var appUser = _userManager.Users.Include(p => p.Photos)
+                    .FirstOrDefault(u => u.NormalizedUserName == useForLoginDto.UserName.ToUpper());
+
+                var userForReturn = _mapper.Map<UserForDetailedDto>(appUser);
+
+                _logger.LogInformation($"{useForLoginDto.UserName} لاگین کرده است");
+                return Ok(new
+                {
+                    token = _utilities.GenerateJwtToken(appUser, useForLoginDto.IsRemember),
+                    user = userForReturn
+                });
+            }
+            else
             {
                 _logger.LogWarning($"{useForLoginDto.UserName} درخواست لاگین ناموفق داشته است");
                 return Unauthorized("کاربری با این یوزر و پس وجود ندارد");
 
             }
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name,userFromRepo.UserName)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDes = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = useForLoginDto.IsRemember ? DateTime.Now.AddDays(1) : DateTime.Now.AddHours(2),
-                SigningCredentials = creds
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDes);
-
-
-            var user = _mapper.Map<UserForDetailedDto>(userFromRepo);
-
-            _logger.LogInformation($"{useForLoginDto.UserName} لاگین کرده است");
-            return Ok(new
-            {
-                token = tokenHandler.WriteToken(token),
-                user
-            });
-
         }
     }
 }

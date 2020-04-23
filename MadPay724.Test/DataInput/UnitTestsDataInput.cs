@@ -11,34 +11,32 @@ namespace MadPay724.Test.DataInput
 {
     public static class UnitTestsDataInput
     {
-        public static readonly string baseRouteV1 = "api/v1/";
 
-        public static readonly string unToken = "";
+        public const string baseRouteV1 = "api/v1/";
 
-        public static readonly string aToken =
-            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzYjY0YmRiYS01ZDE4LTQ3ZWYtOWYxNS03NTU2NTRhNDkyYTQiLCJ1bmlxdWVfbmFtZSI6InNAZ21haWwuY29tIiwibmJmIjoxNTg3NDgxNDU1LCJleHAiOjE1ODc1Njc4NTUsImlhdCI6MTU4NzQ4MTQ1NX0.ZgHRVGs3G56hSAHmMeJ0WpqbsaY3ga_c6DYPajgI2f9c0RjPbdDvRWqXo1FObdIFFHEM6Eoqe62VIXhHi2kczg";
+        public const string unToken = "";
+
+        public const string aToken =
+            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzODhkZTJiYy04NTFkLTRjOTUtOGJmOS0xOTM5ZTUyZTQ0YzgiLCJ1bmlxdWVfbmFtZSI6ImhheXNtYXRoaXNAYmFya2FyYW1hLmNvbSIsIm5iZiI6MTU2NDE0NjA2OSwiZXhwIjoxNTY0MjMyNDY5LCJpYXQiOjE1NjQxNDYwNjl9.oy4WZfWUOJYNshy6YUk681ZHMlnbf30l0x_Jm98LHIbwDccei_R2WpPz92k2pR7r9m6MUaiI9AXDVYk5REWBaQ";
 
 
 
-        public static readonly string userLogedInUsername = "s@gmail.com";
-        public static readonly string userLogedInPassword = "12345";
-        public static readonly string userLogedInId = "9578f766-5d44-4abe-a556-b1b2c257f74a";
-        public static readonly string userAnOtherId = "0d47394e-672f-4db7-898c-bfd8f32e2af7";
-        public static readonly string userLogedInPhotoId = "ba09fde5-3754-4e94-908e-7d1db6fb4aa3";
+        public const string userLogedInUsername = "kathybrown@barkarama.com";
+        public const string userLogedInPassword = "password";
+        public const string userLogedInId = "1e15701a-8291-420d-923a-eebf5f2b6fc5";
+        public const string userAnOtherId = "388de2bc-851d-4c95-8bf9-1939e52e44c8";
+        public const string userLogedInPhotoId = "e97fd389-fb3d-4ea2-929d-435f5ecdc159";
 
 
         public static readonly IEnumerable<User> Users = new List<User>()
         {
             new User
             {
-                Id = "9578f766-5d44-4abe-a556-b1b2c257f74a",
-                //Datecreated = DateTime.Now,
-                //DateModified = DateTime.Now,
+                Id = "0d47394e-672f-4db7-898c-bfd8f32e2af7",
                 DateOfBirth = DateTime.Now,
                 LastActive = DateTime.Now,
-                //PasswordHash =new byte[255],
-                //PasswordSalt = new byte[255],
-                UserName = "haysmathis@barkarama.com",
+                PasswordHash ="",
+                UserName = "kathybrown@barkarama.com",
                 Name = "Holloway Vasquez",
                 PhoneNumber = "55",
                 Address = "55",
@@ -50,8 +48,8 @@ namespace MadPay724.Test.DataInput
                 {
                     new Photo()
                     {
-                        Id = "ba09fde5-3754-4e94-908e-7d1db6fb4aa3",
-                        UserId = "9578f766-5d44-4abe-a556-b1b2c257f74a",
+                        Id = "0d47394e-672f-4db7-898c-bfd8f32e2af",
+                        UserId = "0d47394e-672f-4db7-898c-bfd8f32e2af7",
                         Datecreated = DateTime.Now,
                         DateModified = DateTime.Now,
                         PublicId = "1",
@@ -73,8 +71,8 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForDetailedDto userForDetailedDto = new UserForDetailedDto()
         {
-            Id = "9578f766-5d44-4abe-a556-b1b2c257f74a",
-            UserName = "se@gmail.com",
+            Id = "0d47394e-672f-4db7-898c-bfd8f32e2af7",
+            UserName = "haysmathis@barkarama.com",
             Name = "Holloway Vasquez",
             PhoneNumber = "55",
             Address = "55",
@@ -88,18 +86,18 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForRegisterDto userForRegisterDto = new UserForRegisterDto()
         {
-            UserName = "gse@gmail.com",
+            UserName = "asasas@b545ma.com",
             Password = "123789",
-            Name = "soni",
-            PhoneNumber = "0912552932"
+            Name = "کیوان",
+            PhoneNumber = "15486523"
         };
 
         public static readonly UserForRegisterDto userForRegisterDto_Fail_Exist = new UserForRegisterDto()
         {
-            UserName = "se@gmail.com",
-            Password = "123456",
-            Name = "sara",
-            PhoneNumber = "12345678"
+            UserName = "kathybrown@barkarama.com",
+            Password = "123789",
+            Name = "کیوان",
+            PhoneNumber = "15486523"
         };
 
         public static readonly UserForRegisterDto userForRegisterDto_Fail_ModelState = new UserForRegisterDto()
@@ -112,8 +110,8 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForLoginDto useForLoginDto_Success = new UserForLoginDto()
         {
-            UserName = "s@gmail.com",
-            Password = "12345",
+            UserName = "kathybrown@barkarama.com",
+            Password = "password",
             IsRemember = true
         };
 
@@ -157,14 +155,14 @@ namespace MadPay724.Test.DataInput
 
         public static readonly PasswordForChangeDto passwordForChangeDto = new PasswordForChangeDto()
         {
-            OldPassword = "12345",
-            NewPassword = "12345"
+            OldPassword = "123789",
+            NewPassword = "123789"
         };
 
         public static readonly PasswordForChangeDto passwordForChangeDto_Fail = new PasswordForChangeDto()
         {
             OldPassword = "123789654645",
-            NewPassword = "12345"
+            NewPassword = "123789"
         };
 
         public static readonly PasswordForChangeDto passwordForChangeDto_Fail_ModelState = new PasswordForChangeDto()
