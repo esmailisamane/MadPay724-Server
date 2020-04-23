@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MadPay724.Presentation.Controllers.V1.Site.Admin
 {
-    [Authorize]
+   [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "v1_Site_Admin")]
    // [Route("api/v1/site/admin/[controller]")]
     [ApiController]
@@ -36,7 +36,7 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
             _userService = userService;
             _logger = logger;
         }
-        
+        [AllowAnonymous]
         [HttpGet(ApiV1Routes.Users.GetUsers)]
         [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetUsers()
@@ -56,7 +56,7 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
 
 
         [HttpGet(ApiV1Routes.Users.GetUser, Name = "GetUser")]
-        [ServiceFilter(typeof(UserCkeckIdFilter))]
+       [ServiceFilter(typeof(UserCkeckIdFilter))]
         public async Task<IActionResult> GetUser(string id)
         {
             var user = await _db.UserRepository.GetManyAsync(p => p.Id == id, null, "Photos");

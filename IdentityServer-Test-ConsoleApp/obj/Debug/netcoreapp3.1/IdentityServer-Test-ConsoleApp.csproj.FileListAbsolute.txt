@@ -13,5 +13,5 @@ C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\obj\De
 C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\obj\Debug\netcoreapp3.1\IdentityServer-Test-ConsoleApp.genruntimeconfig.cache
 C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\bin\Debug\netcoreapp3.1\RestSharp.dll
 C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\bin\Debug\netcoreapp3.1\IdentityModel.dll
-C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\obj\Debug\netcoreapp3.1\IdentityServer-Test-ConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\MadPay724-test\IdentityServer-Test-ConsoleApp\bin\Debug\netcoreapp3.1\System.Text.Json.dll

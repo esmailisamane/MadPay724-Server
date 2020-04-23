@@ -118,7 +118,6 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\ZNetCS.AspNetCore.Logging.EntityFrameworkCore.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\NSwag.Generation.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\MadPay724.Common.dll
-C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
@@ -137,10 +136,8 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\NSwag.Annotations.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\NLog.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.IO.Pipelines.dll
-C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\MadPay724.Presentation.pdb
@@ -253,3 +250,15 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\IdentityModel.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\IdentityModel.AspNetCore.OAuth2Introspection.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\IdentityServer4.AccessTokenValidation.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.NodeServices.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.SpaServices.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.SpaServices.Extensions.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll

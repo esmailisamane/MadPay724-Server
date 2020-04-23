@@ -23,7 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MadPay724.Presentation.Controllers.V1.Site.Admin
 {
-    [Authorize]
+   
     [ApiExplorerSettings(GroupName = "v1_Site_Admin")]
     [Route("api/v1/site/admin/[controller]")]
     [ApiController]

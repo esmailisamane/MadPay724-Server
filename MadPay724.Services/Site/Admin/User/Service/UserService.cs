@@ -29,8 +29,8 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
                 return null;
             }
 
-            if (!_utilities.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
+            //if (!_utilities.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            //    return null;
 
             return user;
 
@@ -41,8 +41,8 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
             byte[] passwordHash, passwordSalt;
             _utilities.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            //user.PasswordHash = passwordHash;
+            //user.PasswordSalt = passwordSalt;
             _db.UserRepository.Update(user);
             return await _db.saveAsync();
 

@@ -8,6 +8,7 @@ using MadPay724.Common.Helpers;
 using MadPay724.Common.Helpers.Helpers;
 using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
+using MadPay724.Data.Models;
 using MadPay724.Presentation.Helpers.Filters;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Seed.Interface;
@@ -17,11 +18,15 @@ using MadPay724.Services.Site.Admin.Auth.Service;
 using MadPay724.Services.Upload.Interface;
 using MadPay724.Services.Upload.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -53,7 +58,10 @@ namespace MadPay724.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+            services.AddDbContext<MadpayDbContext>(p => p.UseSqlServer(
+                @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
+
+
                  services.AddMvc(config =>
                  {
                      config.EnableEndpointRouting = false;
@@ -61,6 +69,10 @@ namespace MadPay724.Presentation
                      config.SslPort = _httpsPort;
                      config.Filters.Add(typeof(RequireHttpsAttribute));
                      config.Filters.Add(typeof(LinkRewritingFilter));
+                     var policy = new AuthorizationPolicyBuilder()
+                     .RequireAuthenticatedUser()
+                     .Build();
+                     config.Filters.Add(new AuthorizeFilter(policy));
 
                  //var jsonFormatter = config.OutputFormatters.OfType<JsonOutputFormatter>().Single();
                  //config.OutputFormatters.Remove(jsonFormatter);
@@ -75,6 +87,17 @@ namespace MadPay724.Presentation
                      opt.SerializerSettings.ReferenceLoopHandling =
                      Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                  });
+
+           
+
+          
+            //services.AddAuthentication("Bearer")
+            //    .AddIdentityServerAuthentication(opt =>
+            //    {
+            //        opt.Authority = "http://localhost:5000";
+            //        opt.RequireHttpsMetadata = false;
+            //        opt.ApiName = "MadPay724Api";
+            //    });
 
             services.AddResponseCaching();
 
@@ -114,26 +137,32 @@ namespace MadPay724.Presentation
             services.AddScoped<UserCkeckIdFilter>();
 
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt =>
-                {
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            IdentityBuilder builder = services.AddIdentityCore<User>(opt =>
+            {
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 4;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+            });
+            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            builder.AddEntityFrameworkStores<MadpayDbContext>();
+            builder.AddRoleValidator<RoleValidator<Role>>();
+            builder.AddRoleManager<RoleManager<Role>>();
+            builder.AddSignInManager<SignInManager<User>>();
+            builder.AddDefaultTokenProviders();
 
-            //services.AddAuthentication("Bearer")
-            //    .AddIdentityServerAuthentication(opt =>
-            //    {
-            //        opt.Authority = "http://localhost:5000";
-            //        opt.RequireHttpsMetadata = false;
-            //        opt.ApiName = "MadPay724Api";
-            //    });
-                    
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(opt =>
+                    {
+                        opt.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
+
 
             //Swagger
             services.AddOpenApiDocument(document =>
@@ -192,12 +221,12 @@ namespace MadPay724.Presentation
             });
             //
 
-            services.AddTransient<ISeedService, SeedService>();
+            services.AddTransient<SeedService>();
             
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ISeedService seeder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedService seeder)
         {
             if (env.IsDevelopment())
             {
@@ -221,7 +250,7 @@ namespace MadPay724.Presentation
                
             }
             app.UseHsts();
-            //seeder.SeedUsers();
+           // seeder.SeedUsers();
             app.UseHttpsRedirection();
             app.UseResponseCaching();
             app.UseCors(p => p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());

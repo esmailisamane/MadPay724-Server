@@ -15,23 +15,23 @@ namespace IdentityServer_Test_ConsoleApp
         {
 
 
-            var disco = await DiscoveryClient.GetAsync("http://localhost:5000");
-            if (disco.IsError)
-            {
-                Console.WriteLine(disco.Error);
-                return;
-            }
+          //  var disco = await DiscoveryClient.GetAsync("http://localhost:5000");
+            //if (disco.IsError)
+            //{
+            //    Console.WriteLine(disco.Error);
+            //    return;
+            //}
 
-            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
-            var tokenResponse = await tokenClient.RequestClientCredentialsAsync("MadPay724Api");
+          //  var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
+           // var tokenResponse = await tokenClient.RequestClientCredentialsAsync("MadPay724Api");
 
-            if (tokenResponse.IsError)
-            {
-                Console.WriteLine(tokenResponse.Error);
-                return;
-            }
+            //if (tokenResponse.IsError)
+            //{
+            //    Console.WriteLine(tokenResponse.Error);
+            //    return;
+            //}
 
-            Console.WriteLine(tokenResponse.Json);
+           // Console.WriteLine(tokenResponse.Json);
             Console.WriteLine("\n\n");
 
             //var client = new RestClient("https://localhost:44342/api/v1/site/admin/Users");
@@ -43,7 +43,7 @@ namespace IdentityServer_Test_ConsoleApp
             //IRestResponse response = client.Execute(request);
 
             var client = new HttpClient();
-            client.SetBearerToken(tokenResponse.AccessToken);
+           // client.SetBearerToken(tokenResponse.AccessToken);
             var res = await client.GetAsync("https://localhost:44342/api/v1/site/admin/Users");
 
             if (!res.IsSuccessStatusCode)
