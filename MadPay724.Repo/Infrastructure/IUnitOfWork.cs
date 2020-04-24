@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace MadPay724.Repo.Infrastructure
 {
-  public  interface IUnitOfWork<TContext> :IDisposable where TContext:DbContext
+    public interface IUnitOfWork<TContext> : IDisposable where TContext : DbContext
     {
-        IUserRepository UserRepository { get;}
+        IUserRepository UserRepository { get; }
         IPhotoRepository PhotoRepository { get; }
         ISettingRepository SettingRepository { get; }
+        IRoleRepository RoleRepository { get; }
         bool Save();
-        Task<bool> saveAsync();
+        Task<bool> SaveAsync();
+
     }
 }

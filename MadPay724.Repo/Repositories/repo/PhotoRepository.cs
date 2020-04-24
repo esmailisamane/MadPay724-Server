@@ -14,7 +14,7 @@ namespace MadPay724.Repo.Repositories.repo
         private readonly DbContext _db;
         public PhotoRepository(DbContext dbContext) : base(dbContext)
         {
-            _db = (_db ?? (MadpayDbContext)_db);
+            _db ??= (MadpayDbContext)_db;
         }
 
     }

@@ -1,12 +1,12 @@
 ﻿using MadPay724.Data.Dtos.Common;
 using MadPay724.Data.Dtos.Common.ION;
-using MadPay724.Data.Dtos.Site.Admin.BankCards;
-using MadPay724.Data.Dtos.Site.Admin.Photos;
+using MadPay724.Data.Dtos.Site.Panel.BankCards;
+using MadPay724.Data.Dtos.Site.Panel.Photos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MadPay724.Data.Dtos.Site.Admin.Users
+namespace MadPay724.Data.Dtos.Site.Panel.Users
 {
   public  class UserForListDto : BaseDto
     {

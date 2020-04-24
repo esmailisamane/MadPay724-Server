@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
-using MadPay724.Data.Dtos.Site.Admin;
-using MadPay724.Data.Dtos.Site.Admin.Users;
+using MadPay724.Data.Dtos.Site.Panel.Users;
 using MadPay724.Data.Models;
 using MadPay724.Presentation.Routes.V1;
 using MadPay724.Repo.Infrastructure;
@@ -24,11 +21,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MadPay724.Presentation.Controllers.V1.Site.Admin
+namespace MadPay724.Presentation.Controllers.Site.V1.User
 {
 
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "v1_Site_Admin")]
+    [ApiExplorerSettings(GroupName = "v1_Site_Panel")]
     //[Route("api/v1/site/admin/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -39,13 +36,13 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
         private readonly IUtilities _utilities;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<Data.Models.User> _userManager;
+        private readonly SignInManager<Data.Models.User> _signInManager;
 
 
         public AuthController(IUnitOfWork<MadpayDbContext> dbContext, IAuthService authService,
             IConfiguration config, IMapper mapper, ILogger<AuthController> logger, IUtilities utilities,
-            UserManager<User> userManager, SignInManager<User> signInManager)
+            UserManager<Data.Models.User> userManager, SignInManager<Data.Models.User> signInManager)
         {
             _db = dbContext;
             _authService = authService;
@@ -61,20 +58,7 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
         [HttpPost(ApiV1Routes.Auth.Register)]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-            userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
-            if (await _db.UserRepository.UserExists(userForRegisterDto.UserName))
-            {
-                _logger.LogWarning($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} میحواهد دوباره ثبت نام کند");
-                return BadRequest(new returnMessage()
-                {
-                    status = false,
-                    title = "خطا",
-                    message = "نام کاربری وجود دارد"
-                });
-            }
-
-
-            var userToCreate = new User
+            var userToCreate = new Data.Models.User
             {
                 UserName = userForRegisterDto.UserName,
                 Name = userForRegisterDto.Name,
@@ -84,9 +68,8 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
                 Gender = true,
                 DateOfBirth = DateTime.Now,
                 IsActive = true,
-                Status = true
+                Status = true,
             };
-            // var uri = Server.MapPath("~/Files/Pic/profilepic.png");
 
             var photoToCreate = new Photo
             {
@@ -102,29 +85,42 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
                 PublicId = "0"
             };
 
-            var createdUser = await _authService.Register(userToCreate, photoToCreate, userForRegisterDto.Password);
-            if (createdUser != null)
+            var result = await _userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
+
+            if (result.Succeeded)
             {
-                var userForReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+                await _authService.AddUserPhotos(photoToCreate);
+
+                var userForReturn = _mapper.Map<UserForDetailedDto>(userToCreate);
 
                 _logger.LogInformation($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} ثبت نام کرده است");
 
                 return CreatedAtRoute("GetUser", new
                 {
                     controller = "Users",
-                    id = createdUser.Id
+                    id = userToCreate.Id
                 }, userForReturn);
             }
-            else
+            else if (result.Errors.Any())
             {
-                _logger.LogWarning($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} میحواهد دوباره ثبت نام کند");
+                _logger.LogWarning(result.Errors.First().Description);
                 return BadRequest(new returnMessage()
                 {
                     status = false,
                     title = "خطا",
-                    message = "ثبت در دیتابیس"
+                    message = result.Errors.First().Description
                 });
             }
+            else
+            {
+                return BadRequest(new returnMessage()
+                {
+                    status = false,
+                    title = "خطا",
+                    message = "خطای نامشخص"
+                });
+            }
+
 
         }
         [HttpPost(ApiV1Routes.Auth.Login)]
@@ -148,7 +144,7 @@ namespace MadPay724.Presentation.Controllers.V1.Site.Admin
                 _logger.LogInformation($"{useForLoginDto.UserName} لاگین کرده است");
                 return Ok(new
                 {
-                    token = _utilities.GenerateJwtToken(appUser, useForLoginDto.IsRemember),
+                    token = await _utilities.GenerateJwtTokenAsync(appUser, useForLoginDto.IsRemember),
                     user = userForReturn
                 });
             }

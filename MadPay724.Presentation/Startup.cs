@@ -68,7 +68,7 @@ namespace MadPay724.Presentation
                      config.ReturnHttpNotAcceptable = true;
                      config.SslPort = _httpsPort;
                      config.Filters.Add(typeof(RequireHttpsAttribute));
-                     config.Filters.Add(typeof(LinkRewritingFilter));
+                    // config.Filters.Add(typeof(LinkRewritingFilter));
                      var policy = new AuthorizationPolicyBuilder()
                      .RequireAuthenticatedUser()
                      .Build();
@@ -167,8 +167,8 @@ namespace MadPay724.Presentation
             //Swagger
             services.AddOpenApiDocument(document =>
             {
-                document.DocumentName = "v1_Site_Admin";
-                document.ApiGroupNames = new[] { "v1_Site_Admin" };
+                document.DocumentName = "v1_Site_Panel";
+                document.ApiGroupNames = new[] { "v1_Site_Panel" };
                 document.PostProcess = d =>
                 {
                     d.Info.Title = "NanoBeton";
@@ -222,7 +222,24 @@ namespace MadPay724.Presentation
             //
 
             services.AddTransient<SeedService>();
-            
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+
+                opt.AddPolicy("AccessBlog", policy => policy.RequireRole("Admin", "Blog"));
+                opt.AddPolicy("AccessAccounting", policy => policy.RequireRole("Admin", "Accountant"));
+                opt.AddPolicy("AccessSeller", policy => policy.RequireRole("Admin", "Seller"));
+
+                opt.AddPolicy("AccessProfile", policy => policy.RequireRole("Admin", "User", "Blog", "Accountant", "Seller"));
+
+                opt.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
+                opt.AddPolicy("RequireBlogsRole", policy => policy.RequireRole("Blog"));
+                opt.AddPolicy("RequireAccountantRole", policy => policy.RequireRole("Accountant"));
+                opt.AddPolicy("RequireSellerRole", policy => policy.RequireRole("Seller"));
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

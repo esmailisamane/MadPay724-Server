@@ -11,19 +11,24 @@ using System.Threading.Tasks;
 
 namespace MadPay724.Services.Site.Admin.Auth.Service
 {
-   public class UserService : IUserService
+    public class UserService : IUserService
     {
-
         private readonly IUnitOfWork<MadpayDbContext> _db;
         private readonly IUtilities _utilities;
-        public UserService(IUnitOfWork<MadpayDbContext> dbContex, IUtilities utilities)
+
+        public UserService(IUnitOfWork<MadpayDbContext> dbContext, IUtilities utilities)
         {
-            _db = dbContex;
+            _db = dbContext;
             _utilities = utilities;
         }
-        public async Task<User> GetUserForPassChange(string id, string password)
+
+
+
+        public async Task<Data.Models.User> GetUserForPassChange(string id, string password)
         {
+
             var user = await _db.UserRepository.GetByIdAsync(id);
+
             if (user == null)
             {
                 return null;
@@ -32,21 +37,21 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
             //if (!_utilities.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             //    return null;
 
-            return user;
 
+            return user;
         }
 
-        public async Task<bool> UpdateUserPass(User user, string newPassword)
+        public async Task<bool> UpdateUserPass(Data.Models.User user, string newPassword)
         {
             byte[] passwordHash, passwordSalt;
             _utilities.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
 
             //user.PasswordHash = passwordHash;
             //user.PasswordSalt = passwordSalt;
-            _db.UserRepository.Update(user);
-            return await _db.saveAsync();
 
-            
+            _db.UserRepository.Update(user);
+
+            return await _db.SaveAsync();
         }
     }
 }

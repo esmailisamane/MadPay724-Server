@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
-using MadPay724.Data.Dtos.Site.Admin.Users;
+using MadPay724.Data.Dtos.Site.Panel.Users;
 using MadPay724.Data.Models;
-using MadPay724.Presentation.Controllers.V1.Site.Admin;
+using MadPay724.Presentation.Controllers.Site.V1.User;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using MadPay724.Test.DataInput;
@@ -76,10 +72,10 @@ namespace MadPay724.Test.UnitTests.ControllersTests
 
             _mockSignInManager.Setup(x => x.CheckPasswordSignInAsync(
                     It.IsAny<User>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+                .ReturnsAsync(SignInResult.Success);
 
-            _mockUtilities.Setup(x => x.GenerateJwtToken(It.IsAny<User>(), It.IsAny<bool>()))
-                .Returns(It.IsAny<string>());
+            _mockUtilities.Setup(x => x.GenerateJwtTokenAsync(It.IsAny<User>(), It.IsAny<bool>()))
+                .ReturnsAsync(It.IsAny<string>());
 
 
             _mockMapper.Setup(x => x.Map<UserForDetailedDto>(It.IsAny<User>()))
@@ -138,10 +134,14 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         public async Task Register_Success()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            _mockRepo.Setup(x => x.UserRepository.UserExists(It.IsAny<string>())).ReturnsAsync(false);
 
-            _mockAuthService.Setup(x => x.Register(It.IsAny<User>(), It.IsAny<Photo>(), It.IsAny<string>()))
-                .ReturnsAsync(UnitTestsDataInput.Users.First());
+            _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _mockAuthService.Setup(x => x.AddUserPhotos(It.IsAny<Photo>()))
+                .ReturnsAsync(true);
+
+
 
             _mockMapper.Setup(x => x.Map<UserForDetailedDto>(It.IsAny<User>()))
                 .Returns(UnitTestsDataInput.userForDetailedDto);
@@ -165,9 +165,15 @@ namespace MadPay724.Test.UnitTests.ControllersTests
         public async Task Register_Fail_UserExist()
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
-            _mockRepo.Setup(x => x.UserRepository.UserExists(It.IsAny<string>())).ReturnsAsync(true);
-
+            _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
             //Act----------------------------------------------------------------------------------------------------------------------------------
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Scheme = "222";
+            _controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
 
             var result = await _controller.Register(UnitTestsDataInput.userForRegisterDto);
             var okResult = result as BadRequestObjectResult;

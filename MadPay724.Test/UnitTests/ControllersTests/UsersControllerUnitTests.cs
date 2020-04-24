@@ -6,9 +6,9 @@ using AutoMapper;
 using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
-using MadPay724.Data.Dtos.Site.Admin.Users;
+using MadPay724.Data.Dtos.Site.Panel.Users;
 using MadPay724.Data.Models;
-using MadPay724.Presentation.Controllers.V1.Site.Admin;
+using MadPay724.Presentation.Controllers.Site.V1.User;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Interface;
 using MadPay724.Test.DataInput;
@@ -81,7 +81,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
                 .Update(
                     It.IsAny<User>()));
 
-            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(true);
+            _mockRepo.Setup(x => x.SaveAsync()).ReturnsAsync(true);
             //
             _mockMapper.Setup(x => x.Map(It.IsAny<UserForUpdateDto>(), It.IsAny<User>()))
                 .Returns(users.First());
@@ -108,7 +108,7 @@ namespace MadPay724.Test.UnitTests.ControllersTests
                 .Update(
                     It.IsAny<User>()));
 
-            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(false);
+            _mockRepo.Setup(x => x.SaveAsync()).ReturnsAsync(false);
             //
             _mockMapper.Setup(x => x.Map(It.IsAny<UserForUpdateDto>(), It.IsAny<User>()))
                 .Returns(users.First());

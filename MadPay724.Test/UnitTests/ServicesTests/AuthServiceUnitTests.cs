@@ -8,13 +8,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
-using MadPay724.Data.Dtos.Site.Admin.Users;
 using MadPay724.Data.Models;
 using MadPay724.Repo.Infrastructure;
 using MadPay724.Services.Site.Admin.Auth.Service;
 using MadPay724.Test.DataInput;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -104,7 +101,7 @@ namespace MadPay724.Test.UnitTests.ServicesTests
             _mockRepo.Setup(x => x.UserRepository.InsertAsync(It.IsAny<User>()));
             _mockRepo.Setup(x => x.PhotoRepository.InsertAsync(It.IsAny<Photo>()));
 
-            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(true);
+            _mockRepo.Setup(x => x.SaveAsync()).ReturnsAsync(true);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var result = await _service.Register(new User(), It.IsAny<Photo>(), It.IsAny<string>());
@@ -125,7 +122,7 @@ namespace MadPay724.Test.UnitTests.ServicesTests
             _mockRepo.Setup(x => x.UserRepository.InsertAsync(It.IsAny<User>()));
             _mockRepo.Setup(x => x.PhotoRepository.InsertAsync(It.IsAny<Photo>()));
 
-            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(false);
+            _mockRepo.Setup(x => x.SaveAsync()).ReturnsAsync(false);
 
             //Act----------------------------------------------------------------------------------------------------------------------------------
             var result = await _service.Register(new User(), It.IsAny<Photo>(), It.IsAny<string>());

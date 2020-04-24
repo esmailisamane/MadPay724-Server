@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace MadPay724.Services.Site.Admin.Auth.Service
 {
-
     public class AuthService : IAuthService
     {
         private readonly IUnitOfWork<MadpayDbContext> _db;
@@ -23,7 +22,18 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
             _db = dbContext;
             _utilities = utilities;
         }
-
+        public async Task<bool> AddUserPhotos(Photo photo)
+        {
+            await _db.PhotoRepository.InsertAsync(photo);
+            if (await _db.SaveAsync())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public async Task<Data.Models.User> Login(string username, string password)
         {
             var users = await _db.UserRepository.GetManyAsync(p => p.UserName == username, null, "Photos");
@@ -51,7 +61,7 @@ namespace MadPay724.Services.Site.Admin.Auth.Service
 
             await _db.UserRepository.InsertAsync(user);
             await _db.PhotoRepository.InsertAsync(photo);
-            if (await _db.saveAsync())
+            if (await _db.SaveAsync())
             {
                 return user;
             }

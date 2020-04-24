@@ -10,15 +10,15 @@ namespace MadPay724.Repo.Infrastructure
 {
     public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext, new()
     {
+        #region ctor
         protected readonly DbContext _db;
         public UnitOfWork()
         {
             _db = new TContext();
         }
+        #endregion
 
-        private bool disposed = false;
-
-
+        #region privaterepository
         private IUserRepository userRepository;
         public IUserRepository UserRepository
         {
@@ -59,6 +59,48 @@ namespace MadPay724.Repo.Infrastructure
             }
         }
 
+
+        private IRoleRepository roleRepository;
+        public IRoleRepository RoleRepository
+        {
+            get
+            {
+                if (roleRepository == null)
+                {
+                    roleRepository = new RoleRepository(_db);
+                }
+                return roleRepository;
+            }
+        }
+        #endregion
+
+
+        #region save
+        public bool Save()
+        {
+            if (_db.SaveChanges() > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            if (await _db.SaveChangesAsync() > 0)
+                return true;
+            else
+                return false;
+        }
+
+        #endregion
+
+
+        #region dispose
+        private bool disposed = false;
+
+
+
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -67,38 +109,19 @@ namespace MadPay724.Repo.Infrastructure
                 {
                     _db.Dispose();
                 }
-               
             }
             disposed = true;
-
         }
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        public bool Save()
-        {
-            if ( _db.SaveChanges() > 0)
-                return true;
-            else
-                return false;
-            
-        }
-
-        public async Task<bool> saveAsync()
-        {
-            if (await _db.SaveChangesAsync() > 0)
-                return true;
-            else
-                return false;
-        }
-
         ~UnitOfWork()
         {
             Dispose(false);
         }
+        #endregion
     }
 }

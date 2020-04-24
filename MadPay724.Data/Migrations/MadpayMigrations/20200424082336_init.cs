@@ -55,24 +55,6 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Settings",
-                columns: table => new
-                {
-                    Id = table.Column<short>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Datecreated = table.Column<DateTime>(nullable: false),
-                    DateModified = table.Column<DateTime>(nullable: false),
-                    CloudinaryCloudName = table.Column<string>(nullable: false),
-                    CloudinaryAPIKey = table.Column<string>(nullable: false),
-                    CloudinaryAPISecret = table.Column<string>(nullable: false),
-                    UploadLocal = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -139,9 +121,7 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true),
-                    RoleId1 = table.Column<string>(nullable: true)
+                    RoleId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,23 +133,11 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId1",
-                        column: x => x.RoleId1,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,7 +161,7 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BankCards",
+                name: "BankCard",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -209,9 +177,9 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BankCards", x => x.Id);
+                    table.PrimaryKey("PK_BankCard", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BankCards_AspNetUsers_UserId",
+                        name: "FK_BankCard_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -219,7 +187,7 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photos",
+                name: "Photo",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -234,9 +202,9 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.PrimaryKey("PK_Photo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_AspNetUsers_UserId",
+                        name: "FK_Photo_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -271,16 +239,6 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId1",
-                table: "AspNetUserRoles",
-                column: "RoleId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_UserId1",
-                table: "AspNetUserRoles",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -293,13 +251,13 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankCards_UserId",
-                table: "BankCards",
+                name: "IX_BankCard_UserId",
+                table: "BankCard",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_UserId",
-                table: "Photos",
+                name: "IX_Photo_UserId",
+                table: "Photo",
                 column: "UserId");
         }
 
@@ -321,13 +279,10 @@ namespace MadPay724.Data.Migrations.MadpayMigrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BankCards");
+                name: "BankCard");
 
             migrationBuilder.DropTable(
-                name: "Photos");
-
-            migrationBuilder.DropTable(
-                name: "Settings");
+                name: "Photo");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

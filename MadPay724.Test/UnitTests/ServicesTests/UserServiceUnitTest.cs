@@ -97,7 +97,7 @@ namespace MadPay724.Test.UnitTests.ServicesTests
 
             _mockRepo.Setup(x => x.UserRepository.Update(It.IsAny<User>()));
 
-            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(true);
+            _mockRepo.Setup(x => x.SaveAsync()).ReturnsAsync(true);
 
 
 
@@ -119,7 +119,7 @@ namespace MadPay724.Test.UnitTests.ServicesTests
 
             _mockRepo.Setup(x => x.UserRepository.Update(It.IsAny<User>()));
 
-            _mockRepo.Setup(x => x.saveAsync()).ReturnsAsync(false);
+            _mockRepo.Setup(x => x.SaveAsync()).ReturnsAsync(false);
 
 
 

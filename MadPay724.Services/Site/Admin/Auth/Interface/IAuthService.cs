@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace MadPay724.Services.Site.Admin.Auth.Interface
 {
- public interface IAuthService
+    public interface IAuthService
     {
-        Task<User> Register(User user, Photo photo, string password);
-        Task<User> Login(string username, string password);
+        Task<Data.Models.User> Register(Data.Models.User user, Photo photo, string password);
+        Task<Data.Models.User> Login(string username, string password);
+
+        Task<bool> AddUserPhotos(Data.Models.Photo photo);
 
     }
 }

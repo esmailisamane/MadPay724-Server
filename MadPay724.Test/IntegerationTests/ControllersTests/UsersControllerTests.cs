@@ -1,6 +1,4 @@
-﻿
-using MadPay724.Common.ErrorAndMesseage;
-using MadPay724.Data.Dtos.Site.Admin.Users;
+﻿using MadPay724.Common.ErrorAndMesseage;
 using MadPay724.Presentation;
 using MadPay724.Test.DataInput;
 using MadPay724.Test.IntegerationTests.Providers;
@@ -31,7 +29,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string userHimSelfId = UnitTestsDataInput.userLogedInId;
-            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/" + userHimSelfId;
+            var request = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/" + userHimSelfId;
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
 
@@ -48,7 +46,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
         {
             //Arrange------------------------------------------------------------------------------------------------------------------------------
             string anOtherUserId = UnitTestsDataInput.userAnOtherId;
-            var request = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/" + anOtherUserId;
+            var request = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/" + anOtherUserId;
 
             _client.DefaultRequestHeaders.Authorization
            = new AuthenticationHeaderValue("Bearer", UnitTestsDataInput.aToken);
@@ -71,7 +69,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userLogedInId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/" + userHimselfId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/" + userHimselfId,
                 Body = UnitTestsDataInput.userForUpdateDto
             };
             _client.DefaultRequestHeaders.Authorization
@@ -91,7 +89,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string anOtherUserId = UnitTestsDataInput.userAnOtherId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/" + anOtherUserId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/" + anOtherUserId,
                 Body = UnitTestsDataInput.userForUpdateDto
             };
             _client.DefaultRequestHeaders.Authorization
@@ -110,7 +108,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userLogedInId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/" + userHimselfId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/" + userHimselfId,
                 Body = UnitTestsDataInput.userForUpdateDto_Fail_ModelState
             };
             _client.DefaultRequestHeaders.Authorization
@@ -132,7 +130,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userLogedInId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/ChangeUserPassword/" + userHimselfId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/ChangeUserPassword/" + userHimselfId,
                 Body = UnitTestsDataInput.passwordForChangeDto
             };
             _client.DefaultRequestHeaders.Authorization
@@ -152,7 +150,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string anOtherUserId = UnitTestsDataInput.userAnOtherId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/ChangeUserPassword/" + anOtherUserId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/ChangeUserPassword/" + anOtherUserId,
                 Body = UnitTestsDataInput.passwordForChangeDto
             };
             _client.DefaultRequestHeaders.Authorization
@@ -171,7 +169,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userLogedInId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/ChangeUserPassword/" + userHimselfId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/ChangeUserPassword/" + userHimselfId,
                 Body = UnitTestsDataInput.passwordForChangeDto_Fail
             };
             _client.DefaultRequestHeaders.Authorization
@@ -196,7 +194,7 @@ namespace MadPay724.Test.IntegerationTests.ControllersTests
             string userHimselfId = UnitTestsDataInput.userLogedInId;
             var request = new
             {
-                Url = UnitTestsDataInput.baseRouteV1 + "site/admin/Users/ChangeUserPassword/" + userHimselfId,
+                Url = UnitTestsDataInput.baseRouteV1 + "site/panel/Users/ChangeUserPassword/" + userHimselfId,
                 Body = UnitTestsDataInput.passwordForChangeDto_Fail_ModelState
             };
             _client.DefaultRequestHeaders.Authorization
