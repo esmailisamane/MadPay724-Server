@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using AutoMapper;
 using MadPay724.Common.Helpers;
+using MadPay724.Common.Helpers.AppSetting;
 using MadPay724.Common.Helpers.Helpers;
 using MadPay724.Common.Helpers.Interface;
 using MadPay724.Data.DatabaseContext;
@@ -124,7 +125,7 @@ namespace MadPay724.Presentation
 
             services.AddCors();
 
-           // services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+           
 
             services.AddAutoMapper(typeof(Startup));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -135,6 +136,8 @@ namespace MadPay724.Presentation
             services.AddScoped<IUploadService, UploadService>();
             services.AddScoped<IUtilities, Utilities>();
             services.AddScoped<UserCkeckIdFilter>();
+            //services.AddScoped<TokenSetting>();
+
 
 
             IdentityBuilder builder = services.AddIdentityCore<User>(opt =>
@@ -151,15 +154,25 @@ namespace MadPay724.Presentation
             builder.AddSignInManager<SignInManager<User>>();
             builder.AddDefaultTokenProviders();
 
+
+           // services.Configure<TokenSetting>(Configuration.GetSection("TokenSetting"));
+
+            var tokenSettingSection = Configuration.GetSection("TokenSetting");
+            var tokenSetting = tokenSettingSection.Get<TokenSetting>();
+            var key = Encoding.ASCII.GetBytes(tokenSetting.Secret);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(opt =>
                     {
                         opt.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                            ValidateIssuer = false,
-                            ValidateAudience = false
+                            IssuerSigningKey = new SymmetricSecurityKey(key),
+                            ValidateIssuer = true,
+                            ValidIssuer = tokenSetting.Site,
+                            ValidateAudience = true,
+                            ValidAudience = tokenSetting.Audience,
+                            ClockSkew = TimeSpan.Zero
                         };
                     });
 

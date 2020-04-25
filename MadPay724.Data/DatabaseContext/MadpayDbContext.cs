@@ -23,6 +23,12 @@ namespace MadPay724.Data.DatabaseContext
         {
             optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True");
         }
+
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<BankCard> BankCards { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Token> Tokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

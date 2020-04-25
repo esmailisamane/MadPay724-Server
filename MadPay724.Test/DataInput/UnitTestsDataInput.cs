@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MadPay724.Data.Dtos.Common.Token;
 using MadPay724.Data.Dtos.Services;
 using MadPay724.Data.Dtos.Site.Panel.Photos;
+using MadPay724.Data.Dtos.Site.Panel.Roles;
 using MadPay724.Data.Dtos.Site.Panel.Users;
 using MadPay724.Data.Models;
 using Moq;
@@ -17,12 +19,12 @@ namespace MadPay724.Test.DataInput
         public const string unToken = "";
 
         public const string aToken =
-            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1OGIzYzBkZC03YWRlLTQzM2YtODUxYS04M2YyZjc5OTdjZGUiLCJ1bmlxdWVfbmFtZSI6InNlQGdtYWlsLmNvbSIsIm5iZiI6MTU4NzcwOTE1OCwiZXhwIjoxNTg3Nzk1NTU4LCJpYXQiOjE1ODc3MDkxNTh9.XxuJHAteL-hicTLNjcURNafSYGU8M_zLYD824atHKNJ-DFZuljF6iU-RFmRWrY5aidiWZJ8fEXeaOyF7Ap57kQ";
-
-
-        public const string userLogedInUsername = "se@gmail.com";
-        public const string userLogedInPassword = "e123456";
-        public const string userLogedInId = "08dfeb06-2a29-4d53-976e-15093272d5c0";
+          "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI4M2IwNTQ3My04NjA3LTRkZDUtOWMyZS02ZWYzN2UzMWYzYTYiLCJ1bmlxdWVfbmFtZSI6ImFkbWluQG5hbm8uY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNTg3ODIxOTQ2LCJleHAiOjE1ODc4MjI1NDYsImlhdCI6MTU4NzgyMTk0NiwiaXNzIjoiU2VuZEdyaWRLZXkiLCJhdWQiOiJTZW5kR3JpZEtleSJ9.yAgdVw3-QaPPrZQUrH_o0STfLAjDkJi8imo6ERrTn8nCfCuc4W5KsInzY5ihX1OE2qPyIf80xmFac3-WT4Iq8g";
+       
+        
+        public const string userLogedInUsername = "admin@nano.com";
+        public const string userLogedInPassword = "password";
+        public const string userLogedInId = "83b05473-8607-4dd5-9c2e-6ef37e31f3a6";
         public const string userAnOtherId = "388de2bc-851d-4c95-8bf9-1939e52e44c8";
         public const string userLogedInPhotoId = "250457b8-db5b-4704-976c-ca50edbec4f1";
         public const string userAnOtherPhotoId = "e97fd389-fb3d-4ea2-929d-435f5e";
@@ -32,11 +34,11 @@ namespace MadPay724.Test.DataInput
         {
             new User
             {
-                Id = "08dfeb06-2a29-4d53-976e-15093272d5c0",
+                Id = "83b05473-8607-4dd5-9c2e-6ef37e31f3a6",
                 DateOfBirth = DateTime.Now,
                 LastActive = DateTime.Now,
                 PasswordHash ="",
-                UserName = "se@gmail.com",
+                UserName = "admin@nano.com",
                 Name = "Holloway Vasquez",
                 PhoneNumber = "55",
                 Address = "55",
@@ -48,8 +50,8 @@ namespace MadPay724.Test.DataInput
                 {
                     new Photo()
                     {
-                        Id = "250457b8-db5b-4704-976c-ca50edbec4f1",
-                        UserId = "08dfeb06-2a29-4d53-976e-15093272d5c0",
+                        Id = "0d47394e-672f-4db7-898c-bfd8f32e2af",
+                        UserId = "83b05473-8607-4dd5-9c2e-6ef37e31f3a6",
                         Datecreated = DateTime.Now,
                         DateModified = DateTime.Now,
                         PublicId = "1",
@@ -62,6 +64,30 @@ namespace MadPay724.Test.DataInput
             }
         };
 
+        public static readonly IEnumerable<Role> Roles = new List<Role>()
+        {
+            new Role()
+            {
+                Id = "b3f1fe2b-dd16-4d09-9c99-50ed30de43e7",
+                Name = "Admin"
+            },
+            new Role()
+            {
+                Id = "8a37ea52-4eda-47d3-8f67-4c818c9fca0c",
+                Name = "User"
+            }
+        };
+
+        public static readonly IList<string> RolesString = new List<string>()
+        {
+           "Admin","Blog"
+        };
+
+        public static readonly RoleEditDto roleEditDto = new RoleEditDto
+        {
+            RoleNames = new[] { "User" }
+        };
+
         public static readonly Setting settingForUpload = new Setting()
         {
             CloudinaryCloudName = "12",
@@ -71,8 +97,8 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForDetailedDto userForDetailedDto = new UserForDetailedDto()
         {
-            Id = "58b3c0dd-7ade-433f-851a-83f2f7997cde",
-            UserName = "se@gmail.com",
+            Id = "83b05473-8607-4dd5-9c2e-6ef37e31f3a6",
+            UserName = "admin@nano.com",
             Name = "Holloway Vasquez",
             PhoneNumber = "55",
             Address = "55",
@@ -86,7 +112,7 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForRegisterDto userForRegisterDto = new UserForRegisterDto()
         {
-            UserName = "asasas@b545ma.com",
+            UserName = "assasas@b545ma.com",
             Password = "password",
             Name = "کیوان",
             PhoneNumber = "15486523"
@@ -94,8 +120,8 @@ namespace MadPay724.Test.DataInput
 
         public static readonly UserForRegisterDto userForRegisterDto_Fail_Exist = new UserForRegisterDto()
         {
-            UserName = "se@gmail.com",
-            Password = "e123456",
+            UserName = "admin@nano.com",
+            Password = "password",
             Name = "کیوان",
             PhoneNumber = "15486523"
         };
@@ -108,24 +134,41 @@ namespace MadPay724.Test.DataInput
             PhoneNumber = string.Empty
         };
 
-        public static readonly UserForLoginDto useForLoginDto_Success = new UserForLoginDto()
+        public static readonly TokenRequestDto useForLoginDto_Success_password = new TokenRequestDto()
         {
-            UserName = "se@gmail.com",
-            Password = "e123456",
+            GrantType = "password",
+            UserName = "admin@nano.com",
+            Password = "password",
             IsRemember = true
         };
-
-        public static readonly UserForLoginDto useForLoginDto_Fail = new UserForLoginDto()
+        public static readonly TokenRequestDto useForLoginDto_Success_refreshToken = new TokenRequestDto()
         {
+            GrantType = "refresh_token",
+            UserName = "admin@nano.com",
+            RefreshToken = "1601c692e92541398a9ab6250426d6e7",
+            IsRemember = true
+        };
+        public static readonly TokenRequestDto useForLoginDto_Fail_refreshToken = new TokenRequestDto()
+        {
+            GrantType = "refresh_token",
+            UserName = "admin@nano.com",
+            RefreshToken = "noRefreshToken",
+            IsRemember = true
+        };
+        public static readonly TokenRequestDto useForLoginDto_Fail_password = new TokenRequestDto()
+        {
+            GrantType = "password",
             UserName = "00@000.com",
             Password = "password",
             IsRemember = true
         };
 
-        public static readonly UserForLoginDto useForLoginDto_Fail_ModelState = new UserForLoginDto()
+
+        public static readonly TokenRequestDto useForLoginDto_Fail_ModelState = new TokenRequestDto()
         {
+
             UserName = string.Empty,
-            Password = string.Empty
+            GrantType = string.Empty
         };
 
         public static readonly PhotoForProfileDto photoForProfileDto = new PhotoForProfileDto()
@@ -161,7 +204,7 @@ namespace MadPay724.Test.DataInput
 
         public static readonly PasswordForChangeDto passwordForChangeDto_Fail = new PasswordForChangeDto()
         {
-            OldPassword = "1237891",
+            OldPassword = "123789654645",
             NewPassword = "123789"
         };
 

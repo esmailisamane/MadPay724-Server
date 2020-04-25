@@ -14,6 +14,7 @@ namespace MadPay724.Repo.Infrastructure
         IPhotoRepository PhotoRepository { get; }
         ISettingRepository SettingRepository { get; }
         IRoleRepository RoleRepository { get; }
+        ITokenRepository TokenRepository { get; }
         bool Save();
         Task<bool> SaveAsync();
 
