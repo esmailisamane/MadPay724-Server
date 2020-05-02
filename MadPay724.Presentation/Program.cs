@@ -21,13 +21,13 @@ namespace MadPay724.Presentation
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-             .ConfigureLogging((hostingContext, logging) =>
-             {
-                 logging.AddNLog();
-                 logging.AddEntityFramework<LogDbContext, ExtendedLog>();
+           Host.CreateDefaultBuilder(args)
+            // .ConfigureLogging((hostingContext, logging) =>
+            // {
+            //     logging.AddNLog();
+            //     logging.AddEntityFramework<LogDbContext, ExtendedLog>();
 
-             })
+            // })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

@@ -262,3 +262,9 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Hosting.Abstractions.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Dapper.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\ReportInfrastructure.dll
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\ReportInfrastructure.pdb

@@ -62,8 +62,10 @@ namespace MadPay724.Presentation
             services.AddDbContext<MadpayDbContext>(p => p.UseSqlServer(
                 @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
 
+            services.AddDbContext<BPMS_NanobotonContext>(p => p.UseSqlServer(
+               @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog =BPMS_Nanoboton; Integrated Security= True; MultipleActiveResultSets=True"));
 
-                 services.AddMvc(config =>
+            services.AddMvc(config =>
                  {
                      config.EnableEndpointRouting = false;
                      config.ReturnHttpNotAcceptable = true;

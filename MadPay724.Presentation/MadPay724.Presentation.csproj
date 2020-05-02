@@ -32,11 +32,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MadPay724.Services\MadPay724.Services.csproj" />
+    <ProjectReference Include="..\ReportInfrastructure\ReportInfrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\Api\" />
+    <Folder Include="Controllers\Report\Sales\" />
     <Folder Include="Controllers\Site\V1\App\" />
+    <Folder Include="ReportModel\" />
     <Folder Include="wwwroot\Files\Pic\Profile\" />
   </ItemGroup>
 
