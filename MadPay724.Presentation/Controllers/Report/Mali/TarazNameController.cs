@@ -9,7 +9,7 @@ using ReportInfrastructure.Sql;
 namespace MadPay724.Presentation.Controllers.Report.Mali
 {
     [Route("api/[controller]")]
- 
+    [Authorize(Policy = "RequireAccountantRole")]
     public class TarazNameController : Controller
     {
         private readonly BPMS_NanobotonContext _context;
@@ -326,7 +326,7 @@ namespace MadPay724.Presentation.Controllers.Report.Mali
 
 
         // سود و زیان جاری
-        [AllowAnonymous]
+       
         [HttpGet("GetSodoZian/{fromDate?}/{toDate?}/{yearid?}")]
         public JsonResult GetSodoZian(string fromDate, string toDate, string yearid)
         {

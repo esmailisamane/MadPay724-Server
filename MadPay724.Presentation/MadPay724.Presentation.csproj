@@ -36,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Clients\app\" />
+    <Folder Include="Clients\my\" />
     <Folder Include="Controllers\Api\" />
     <Folder Include="Controllers\Report\Sales\" />
     <Folder Include="Controllers\Site\V1\App\" />

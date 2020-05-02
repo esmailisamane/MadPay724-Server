@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,9 +62,11 @@ namespace MadPay724.Presentation
         {
             services.AddDbContext<MadpayDbContext>(p => p.UseSqlServer(
                 @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
+            // @"Data Source= WIN-SA8OO9O9HTD ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
 
             services.AddDbContext<BPMS_NanobotonContext>(p => p.UseSqlServer(
                @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog =BPMS_Nanoboton; Integrated Security= True; MultipleActiveResultSets=True"));
+            // @"Data Source=WIN-SA8OO9O9HTD ;Initial Catalog =BPMS_Nanoboton; Integrated Security= True; MultipleActiveResultSets=True"));
 
             services.AddMvc(config =>
                  {
@@ -111,6 +114,11 @@ namespace MadPay724.Presentation
                     opt.Preload = true;
 
                 });
+            services.AddHttpsRedirection(opt =>
+            {
+                opt.RedirectStatusCode = StatusCodes.Status302Found;
+
+            });
 
             //services.AddRouting(opt => opt.LowercaseUrls = true);
 
@@ -125,9 +133,10 @@ namespace MadPay724.Presentation
             //    opt.ApiVersionSelector = new CurrentImplementationApiVersionSelector(opt);
             //});
 
-            services.AddCors();
+            //درحالت پابلیش کامنت شود
+            //services.AddCors();
 
-           
+
 
             services.AddAutoMapper(typeof(Startup));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -253,7 +262,21 @@ namespace MadPay724.Presentation
                 opt.AddPolicy("RequireAccountantRole", policy => policy.RequireRole("Accountant"));
                 opt.AddPolicy("RequireSellerRole", policy => policy.RequireRole("Seller"));
             });
+            #region Publish
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", builder =>
+                builder.WithOrigins("http://localhost:4200", "http://127.0.0.1:8080", "https://nanobeton.ir")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
 
+            services.AddSpaStaticFiles(conf =>
+            {
+                conf.RootPath = "Clients";
+            });
+            #endregion
 
         }
 
@@ -285,7 +308,7 @@ namespace MadPay724.Presentation
            // seeder.SeedUsers();
             app.UseHttpsRedirection();
             app.UseResponseCaching();
-            app.UseCors(p => p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+           // app.UseCors(p => p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -300,12 +323,47 @@ namespace MadPay724.Presentation
             //{
             //    endpoints.MapControllers();
             //});
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-               // FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
-                RequestPath = new PathString("/wwwroot")
-            });
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //   // FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
+            //    RequestPath = new PathString("/wwwroot")
+            //});
             app.UseMvc();
+            #region Publish
+           // app.UseCsp(opt => opt.DefaultSources(s => s.Self()));
+            //app.UseXfo(o => o.Deny());
+             app.UseCors("CorsPolicy");
+
+            app.UseDefaultFiles();
+            app.UseSpaStaticFiles();
+            //
+            app.UseRewriter(new RewriteOptions().AddRewrite(@"^\s*$", "/app", skipRemainingRules: true));
+            app.UseRewriter(new RewriteOptions().AddRewrite(@"^\s*$", "/my", skipRemainingRules: true));
+            app.Map("/app", site =>
+            {
+                site.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "Clients/app";
+                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    {
+                        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Clients/app"))
+                    };
+
+                });
+
+            }).Map("/my", panel =>
+            {
+                panel.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "Clients/my";
+                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    {
+                        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Clients/my"))
+                    };
+                });
+            });
+
+            #endregion
         }
     }
 }
