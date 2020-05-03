@@ -61,12 +61,12 @@ namespace MadPay724.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MadpayDbContext>(p => p.UseSqlServer(
-                @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
-            // @"Data Source= WIN-SA8OO9O9HTD ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
+             // @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
+           @"Data Source= WIN-SA8OO9O9HTD ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"));
 
             services.AddDbContext<BPMS_NanobotonContext>(p => p.UseSqlServer(
-               @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog =BPMS_Nanoboton; Integrated Security= True; MultipleActiveResultSets=True"));
-            // @"Data Source=WIN-SA8OO9O9HTD ;Initial Catalog =BPMS_Nanoboton; Integrated Security= True; MultipleActiveResultSets=True"));
+            // @"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog =BPMS_Nanoboton; Integrated Security= True; MultipleActiveResultSets=True"));
+            @"Data Source=WIN-SA8OO9O9HTD ;Initial Catalog =BPMS_Nanoboton;Integrated Security= True;Integrated Security= True;"));
 
             services.AddMvc(config =>
                  {
@@ -142,6 +142,8 @@ namespace MadPay724.Presentation
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IUnitOfWork<MadpayDbContext>, UnitOfWork<MadpayDbContext>>();
+          
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUploadService, UploadService>();
@@ -336,9 +338,10 @@ namespace MadPay724.Presentation
 
             app.UseDefaultFiles();
             app.UseSpaStaticFiles();
+            
             //
             app.UseRewriter(new RewriteOptions().AddRewrite(@"^\s*$", "/app", skipRemainingRules: true));
-            app.UseRewriter(new RewriteOptions().AddRewrite(@"^\s*$", "/my", skipRemainingRules: true));
+          
             app.Map("/app", site =>
             {
                 site.UseSpa(spa =>

@@ -271,6 +271,10 @@
               "target": "Package",
               "version": "[3.1.2, )"
             },
+            "NLog.Config": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
             "NSwag.AspNetCore": {
               "target": "Package",
               "version": "[13.4.2, )"

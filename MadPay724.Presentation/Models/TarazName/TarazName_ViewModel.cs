@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MadPay724.Presentation.Controllers.Report.Models.TarazName
+namespace MadPay724.Presentation.Models.TarazName
 {
     public class TarazName_ViewModel
     {

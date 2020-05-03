@@ -21,8 +21,8 @@ namespace ReportInfrastructure.Sql
         {
             get
             {
-                //"Data Source=. ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True; MultipleActiveResultSets=True"
-                return new SqlConnection("Data Source=DESKTOP-HO9R1KR\\SA ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True;");//Configurations.ConnectionString
+                //"Data Source=DESKTOP-HO9R1KR\\SA ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True; MultipleActiveResultSets=True"
+                return new SqlConnection("Data Source=WIN-SA8OO9O9HTD ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True;");//Configurations.ConnectionString
             }
         }
 

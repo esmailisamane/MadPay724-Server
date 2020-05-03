@@ -21,7 +21,9 @@ namespace MadPay724.Data.DatabaseContext
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True");
+          //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True");
+          optionsBuilder.UseSqlServer(@"Data Source=WIN-SA8OO9O9HTD ;Initial Catalog = MadPay724db;Integrated Security= True; ");
+
         }
 
         public DbSet<Photo> Photos { get; set; }

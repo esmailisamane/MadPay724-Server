@@ -2132,13 +2132,27 @@
           "lib/netstandard2.0/NJsonSchema.dll": {}
         }
       },
-      "NLog/4.6.8": {
+      "NLog/4.7.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/NLog.dll": {}
         },
         "runtime": {
           "lib/netstandard2.0/NLog.dll": {}
+        }
+      },
+      "NLog.Config/4.7.0": {
+        "type": "package",
+        "dependencies": {
+          "NLog": "4.7.0",
+          "NLog.Schema": "4.7.0"
+        },
+        "contentFiles": {
+          "contentFiles/any/any/_._": {
+            "buildAction": "None",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
         }
       },
       "NLog.Extensions.Logging/1.6.2": {
@@ -2152,6 +2166,16 @@
         },
         "runtime": {
           "lib/netcoreapp3.0/NLog.Extensions.Logging.dll": {}
+        }
+      },
+      "NLog.Schema/4.7.0": {
+        "type": "package",
+        "contentFiles": {
+          "contentFiles/any/any/_._": {
+            "buildAction": "None",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
         }
       },
       "NLog.Web.AspNetCore/4.9.2": {
@@ -4265,6 +4289,7 @@
           "Microsoft.AspNetCore.SpaServices.Extensions": "3.0.0-preview7.19365.7",
           "Microsoft.IdentityModel.Tokens": "6.5.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.2",
+          "NLog.Config": "4.7.0",
           "NSwag.AspNetCore": "13.4.2",
           "ReportInfrastructure": "1.0.0",
           "System.IdentityModel.Tokens.Jwt": "6.5.0"
@@ -7101,10 +7126,10 @@
         "njsonschema.nuspec"
       ]
     },
-    "NLog/4.6.8": {
-      "sha512": "LKB0uN5naOTxdNz++iapk6arNYv2asE8FPRBAmQZ1fe8y8C1Zm6sldh/w9TP/w5s7FGK8s0x6ny0og5ytFK1oQ==",
+    "NLog/4.7.0": {
+      "sha512": "ch4piF/ifV6ZapFx5Vj8MGaiCZkztHwTMFghJJSOkA/LeWcNdvqW8VzRw7ZMvS8anUmsH81FV334Vay6+ja4Kg==",
       "type": "package",
-      "path": "nlog/4.6.8",
+      "path": "nlog/4.7.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7130,8 +7155,23 @@
         "lib/wp8/NLog.xml",
         "lib/xamarinios10/NLog.dll",
         "lib/xamarinios10/NLog.xml",
-        "nlog.4.6.8.nupkg.sha512",
+        "nlog.4.7.0.nupkg.sha512",
         "nlog.nuspec"
+      ]
+    },
+    "NLog.Config/4.7.0": {
+      "sha512": "cNNAdC96/l6xsIwmlIV4TiNl6Rq8ETiI9sYjNLj8psgAVVv51FqPnylFQ/9Gd/N+ubvaQuiA+9+50XysD/n8pQ==",
+      "type": "package",
+      "path": "nlog.config/4.7.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/NLog.config",
+        "contentFiles/any/any/NLog.config",
+        "nlog.config.4.7.0.nupkg.sha512",
+        "nlog.config.nuspec",
+        "tools/Install.ps1"
       ]
     },
     "NLog.Extensions.Logging/1.6.2": {
@@ -7155,6 +7195,19 @@
         "lib/netstandard2.0/NLog.Extensions.Logging.xml",
         "nlog.extensions.logging.1.6.2.nupkg.sha512",
         "nlog.extensions.logging.nuspec"
+      ]
+    },
+    "NLog.Schema/4.7.0": {
+      "sha512": "wNPtswvUtwQMqvUDUMij0AP5NeXYcWgcI+GLAS2cZOi+EMi60l0f/Azaa0zgyliHQBMeveTSgkRtEaipyvHV/g==",
+      "type": "package",
+      "path": "nlog.schema/4.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/NLog.xsd",
+        "contentFiles/any/any/NLog.xsd",
+        "nlog.schema.4.7.0.nupkg.sha512",
+        "nlog.schema.nuspec"
       ]
     },
     "NLog.Web.AspNetCore/4.9.2": {

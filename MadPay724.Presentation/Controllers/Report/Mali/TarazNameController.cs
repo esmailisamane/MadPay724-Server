@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using MadPay724.Data.DatabaseContext;
-using MadPay724.Presentation.Controllers.Report.Models.TarazName;
+using MadPay724.Presentation.Models.TarazName;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReportInfrastructure.Sql;
 
 namespace MadPay724.Presentation.Controllers.Report.Mali
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
-    [Authorize(Policy = "RequireAccountantRole")]
+   // [Authorize(Policy = "RequireAccountantRole")]
     public class TarazNameController : Controller
     {
         private readonly BPMS_NanobotonContext _context;
@@ -24,7 +25,6 @@ namespace MadPay724.Presentation.Controllers.Report.Mali
         [HttpGet("GetDarayiJari/{fromDate?}/{toDate?}/{yearid?}")]
         public JsonResult GetDarayiJari(string fromDate, string toDate, string yearid)
         {
-
             var fdate = "";
             var tDate = "";
             try

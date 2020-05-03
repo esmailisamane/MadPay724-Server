@@ -268,3 +268,4 @@ C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\ReportInfrastructure.dll
 C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\ReportInfrastructure.pdb
+C:\Users\admin\source\repos\MadPay724-test\MadPay724.Test\bin\Debug\netcoreapp3.1\Clients\app\ngsw.json
