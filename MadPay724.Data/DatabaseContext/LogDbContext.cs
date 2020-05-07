@@ -11,8 +11,8 @@ namespace MadPay724.Data.DatabaseContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           // optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog =Logdb; Integrated Security= True; MultipleActiveResultSets=True");
-           optionsBuilder.UseSqlServer(@"Data Source=WIN-SA8OO9O9HTD ;Initial Catalog =Logdb;Integrated Security= True;");
+             optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-HO9R1KR\SA ;Initial Catalog =Logdb; Integrated Security= True; MultipleActiveResultSets=True");
+          // optionsBuilder.UseSqlServer(@"Data Source=WEB ;Initial Catalog =Logdb;Integrated Security= True;");
 
         }
         public DbSet<ExtendedLog> Logs { get; set; }

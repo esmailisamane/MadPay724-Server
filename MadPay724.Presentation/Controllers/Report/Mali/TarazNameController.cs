@@ -10,7 +10,7 @@ namespace MadPay724.Presentation.Controllers.Report.Mali
 {
     [AllowAnonymous]
     [Route("api/[controller]")]
-   // [Authorize(Policy = "RequireAccountantRole")]
+    [Authorize(Policy = "RequireAccountantRole")]
     public class TarazNameController : Controller
     {
         private readonly BPMS_NanobotonContext _context;
