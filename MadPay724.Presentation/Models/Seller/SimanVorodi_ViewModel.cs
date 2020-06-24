@@ -16,5 +16,6 @@ namespace MadPay724.Presentation.Models.Seller
         public string MidArzeshafzode { get; set; }
         public string MidHamle1TonSiman { get; set; }
         public string PriceSimanbaHaml { get; set; }
+        public decimal PriceSimanbaHamlInt { get; set; }
     }
 }
