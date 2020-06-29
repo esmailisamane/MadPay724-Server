@@ -22,7 +22,7 @@ namespace ReportInfrastructure.Sql
             get
             {
                 //"Data Source=DESKTOP-HO9R1KR\\SA -WEB ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True; MultipleActiveResultSets=True"
-                return new SqlConnection("Data Source=DESKTOP-HO9R1KR\\SA ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True;");//Configurations.ConnectionString
+                return new SqlConnection("Data Source = DESKTOP-HO9R1KR\\SA ;Initial Catalog = BPMS_NanoBoton; Integrated Security= True;");//Configurations.ConnectionString
             }
         }
 

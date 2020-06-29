@@ -11,6 +11,7 @@ namespace MadPay724.Presentation.Models.Tashim
         public int Code { get; set; }
         public string Title { get; set; }
         public string Debit { get; set; }
+        public string SumDebit { get; set; }
         public string DarsadShen { get; set; }
         public string DarsadPompaj { get; set; }
         public string DarsadHamlBeton { get; set; }
@@ -31,6 +32,8 @@ namespace MadPay724.Presentation.Models.Tashim
         public string FiHamlBeton { get; set; }
         public string DaramadForoshbeton { get; set; }
         public string FiForoshBeton { get; set; }
-      
+        public string SumHazinehaWithoutShen { get; set; }
+        public string SumKolHazinehaWithoutShen { get; set; }
+
     }
 }
