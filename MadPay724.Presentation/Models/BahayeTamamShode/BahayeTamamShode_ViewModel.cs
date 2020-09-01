@@ -26,6 +26,7 @@ namespace MadPay724.Presentation.Models.BahayeTamamShode
         public string BetonC30 { get; set; }
         public string BetonC35 { get; set; }
         public string BetonC40 { get; set; }
+        public string SumBeton { get; set; }
         public string SumHazinehaWithoutShen { get; set; }
         public string SumKolHazinehaWithoutShen { get; set; }
     }
