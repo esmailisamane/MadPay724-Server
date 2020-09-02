@@ -34,6 +34,7 @@ namespace MadPay724.Presentation.Models.Seller
         public string Value { get; set; }
         public string HazineKol { get; set; }
         public string DarsadHamlKhodeman { get; set; }
+        public string MidPriceMakhlotVorodi { get; set; }
 
     }
 }

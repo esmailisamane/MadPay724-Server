@@ -23,7 +23,7 @@ namespace ReportInfrastructure.Sql
             get
             {
                 //"Data Source=DESKTOP-HO9R1KR\\SA -WEB ;Initial Catalog = MadPay724db; Integrated Security= True; MultipleActiveResultSets=True"
-                return new SqlConnection("Data Source =DESKTOP-HO9R1KR\\SA ;Initial Catalog = MadPay724db; Integrated Security= True;");//Configurations.ConnectionString
+                return new SqlConnection("Data Source = DESKTOP-HO9R1KR\\SA ;Initial Catalog = MadPay724db; Integrated Security= True;");//Configurations.ConnectionString
             }
         }
 
